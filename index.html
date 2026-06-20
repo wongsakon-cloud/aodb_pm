@@ -2,68 +2,78 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>AODB PM Upload Center</title>
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <!-- Google Fonts (Prompt + Inter) -->
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    /* ===== CSS Variables (Light Mode Default) ===== */
+    /* ===== CSS Variables (Light Mode - iOS Glassmorphism) ===== */
     :root {
-      --bg-primary: #f8fafc;
-      --bg-secondary: #ffffff;
-      --bg-card: rgba(255, 255, 255, 0.85);
-      --bg-card-hover: rgba(255, 255, 255, 1);
-      --bg-input: #ffffff;
-      --bg-glass: rgba(0, 0, 0, 0.02);
-      --border-color: rgba(148, 163, 184, 0.3);
-      --border-focus: rgba(73, 106, 237, 0.6);
-      --text-primary: #0f172a;
-      --text-secondary: #475569;
-      --text-muted: #64748b;
-      --accent-primary: #3252DF;
-      --accent-secondary: #496AED;
-      --accent-glow: rgba(73, 106, 237, 0.2);
-      --success: #10b981;
-      --success-bg: rgba(16, 185, 129, 0.1);
-      --warning: #f59e0b;
-      --danger: #ef4444;
-      --gradient-primary: linear-gradient(135deg, #3252DF 0%, #4162E8 50%, #6D89F8 100%);
-      --gradient-header: linear-gradient(135deg, #16235B 0%, #3252DF 40%, #496AED 100%);
-      --gradient-success: linear-gradient(135deg, #059669 0%, #10b981 100%);
-      --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.06);
-      --shadow-glow: 0 0 30px rgba(73, 106, 237, 0.15);
-      --overlay-bg: rgba(255, 255, 255, 0.7);
+      --bg-body: #f2f2f7;
+      --bg-glass: rgba(255, 255, 255, 0.65);
+      --bg-glass-heavy: rgba(255, 255, 255, 0.85);
+      --bg-input: rgba(255, 255, 255, 0.5);
+      --border-glass: rgba(255, 255, 255, 0.8);
+      --border-light: rgba(0, 0, 0, 0.05);
       
-      --radius-sm: 8px;
-      --radius-md: 12px;
-      --radius-lg: 16px;
-      --radius-xl: 20px;
-      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --text-primary: #1c1c1e;
+      --text-secondary: #3a3a3c;
+      --text-muted: #8e8e93;
+      
+      --accent-blue: #007aff;
+      --accent-blue-hover: #005bb5;
+      --accent-blue-light: rgba(0, 122, 255, 0.1);
+      
+      --success: #34c759;
+      --success-light: rgba(52, 199, 89, 0.1);
+      --warning: #ff9500;
+      --danger: #ff3b30;
+      --danger-light: rgba(255, 59, 48, 0.1);
+      
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+      --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
+      --shadow-lg: 0 16px 40px rgba(0, 122, 255, 0.15);
+      
+      --radius-sm: 10px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-xl: 28px;
+      
+      --blur-md: blur(20px) saturate(180%);
+      --blur-lg: blur(40px) saturate(200%);
+      
+      --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
     /* ===== CSS Variables (Dark Mode) ===== */
     @media (prefers-color-scheme: dark) {
       :root {
-        --bg-primary: #0f172a;
-        --bg-secondary: #1e293b;
-        --bg-card: rgba(30, 41, 59, 0.7);
-        --bg-card-hover: rgba(30, 41, 59, 0.9);
-        --bg-input: rgba(15, 23, 42, 0.6);
-        --bg-glass: rgba(255, 255, 255, 0.04);
-        --border-color: rgba(148, 163, 184, 0.15);
-        --border-focus: rgba(73, 106, 237, 0.5);
-        --text-primary: #f1f5f9;
-        --text-secondary: #94a3b8;
-        --text-muted: #64748b;
-        --accent-primary: #496AED;
-        --accent-secondary: #6D89F8;
-        --accent-glow: rgba(73, 106, 237, 0.25);
-        --gradient-primary: linear-gradient(135deg, #496AED 0%, #6D89F8 50%, #94ADFF 100%);
-        --gradient-header: linear-gradient(135deg, #0C1336 0%, #16235B 40%, #253B9E 100%);
-        --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.25);
-        --overlay-bg: rgba(0, 0, 0, 0.7);
+        --bg-body: #000000;
+        --bg-glass: rgba(28, 28, 30, 0.65);
+        --bg-glass-heavy: rgba(44, 44, 46, 0.85);
+        --bg-input: rgba(58, 58, 60, 0.5);
+        --border-glass: rgba(255, 255, 255, 0.1);
+        --border-light: rgba(255, 255, 255, 0.1);
+        
+        --text-primary: #f2f2f7;
+        --text-secondary: #ebebf5;
+        --text-muted: #8e8e93;
+        
+        --accent-blue: #0a84ff;
+        --accent-blue-hover: #007aff;
+        --accent-blue-light: rgba(10, 132, 255, 0.15);
+        
+        --success: #32d74b;
+        --success-light: rgba(50, 215, 75, 0.15);
+        --warning: #ff9f0a;
+        --danger: #ff453a;
+        --danger-light: rgba(255, 69, 58, 0.15);
+        
+        --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
+        --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.3);
+        --shadow-lg: 0 16px 40px rgba(10, 132, 255, 0.2);
       }
     }
 
@@ -71,479 +81,298 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'Prompt', 'Inter', -apple-system, sans-serif;
-      background: var(--bg-primary);
+      font-family: -apple-system, BlinkMacSystemFont, 'Prompt', 'Inter', sans-serif;
+      background-color: var(--bg-body);
       color: var(--text-primary);
       min-height: 100vh;
-      line-height: 1.6;
+      line-height: 1.5;
       -webkit-font-smoothing: antialiased;
-      transition: background-color 0.3s ease, color 0.3s ease;
+      overflow-x: hidden;
+      /* Mesh Gradient Background for iOS feeling */
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(0, 122, 255, 0.1) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(52, 199, 89, 0.05) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(0, 122, 255, 0.15) 0px, transparent 50%),
+        radial-gradient(at 0% 100%, rgba(88, 86, 214, 0.1) 0px, transparent 50%);
+      background-attachment: fixed;
     }
 
-    /* Animated background pattern (Light Mode) */
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: 
-        radial-gradient(ellipse at 20% 50%, rgba(73, 106, 237, 0.05) 0%, transparent 60%),
-        radial-gradient(ellipse at 80% 20%, rgba(109, 137, 248, 0.04) 0%, transparent 50%),
-        radial-gradient(ellipse at 50% 80%, rgba(59, 130, 246, 0.03) 0%, transparent 50%);
-      pointer-events: none;
-      z-index: 0;
-      transition: background 0.3s ease;
-    }
-
-    /* Animated background pattern (Dark Mode) */
-    @media (prefers-color-scheme: dark) {
-      body::before {
-        background: 
-          radial-gradient(ellipse at 20% 50%, rgba(73, 106, 237, 0.08) 0%, transparent 60%),
-          radial-gradient(ellipse at 80% 20%, rgba(109, 137, 248, 0.06) 0%, transparent 50%),
-          radial-gradient(ellipse at 50% 80%, rgba(59, 130, 246, 0.05) 0%, transparent 50%);
-      }
-    }
-
-    /* ===== Layout Container ===== */
     .app-container {
-      position: relative;
-      z-index: 1;
-      max-width: 960px;
+      max-width: 800px;
       margin: 0 auto;
       padding: 16px 16px 40px;
     }
-
     @media (min-width: 768px) {
       .app-container { padding: 32px 24px 60px; }
     }
 
+    /* ===== Glass Card Utility ===== */
+    .glass-card {
+      background: var(--bg-glass);
+      backdrop-filter: var(--blur-md);
+      -webkit-backdrop-filter: var(--blur-md);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+    }
+
     /* ===== Header ===== */
     .app-header {
-      background: var(--gradient-header);
-      border-radius: var(--radius-xl);
-      padding: 28px 24px;
+      text-align: center;
       margin-bottom: 24px;
-      border: 1px solid rgba(73, 106, 237, 0.2);
-      box-shadow: var(--shadow-glow);
-      position: relative;
-      overflow: hidden;
+      padding-top: 20px;
     }
 
-    .app-header::before {
-      content: '';
-      position: absolute;
-      top: -50%; right: -20%;
-      width: 300px; height: 300px;
-      background: radial-gradient(circle, rgba(109, 137, 248, 0.15), transparent 70%);
-      pointer-events: none;
-    }
-
-    .app-header::after {
-      content: '';
-      position: absolute;
-      bottom: -30%; left: -10%;
-      width: 200px; height: 200px;
-      background: radial-gradient(circle, rgba(73, 106, 237, 0.12), transparent 70%);
-      pointer-events: none;
-    }
-
-    .header-content {
-      position: relative;
-      z-index: 1;
+    .app-header .icon-container {
+      width: 64px; height: 64px;
+      margin: 0 auto 12px;
+      background: linear-gradient(135deg, #007aff, #5856d6);
+      border-radius: 18px;
       display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    @media (min-width: 768px) {
-      .header-content {
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-      }
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 28px;
+      box-shadow: var(--shadow-lg);
     }
 
     .header-title {
-      font-size: 1.35rem;
-      font-weight: 700;
-      color: #ffffff; /* Keep white for vibrant header */
-      margin-bottom: 4px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .header-title i {
       font-size: 1.5rem;
-      background: linear-gradient(135deg, #94ADFF, #B8C8FF);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 4px;
     }
 
     .header-subtitle {
-      font-size: 0.82rem;
-      color: rgba(255, 255, 255, 0.8);
-      font-weight: 300;
+      font-size: 0.85rem;
+      color: var(--text-muted);
     }
 
-    .connection-badge {
+    .connection-status {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 8px 16px;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 50px;
+      gap: 6px;
+      margin-top: 12px;
       font-size: 0.75rem;
-      color: #ffffff;
-      backdrop-filter: blur(12px);
-      white-space: nowrap;
+      color: var(--text-muted);
+      padding: 4px 12px;
+      background: var(--bg-glass-heavy);
+      border-radius: 20px;
+      border: 1px solid var(--border-glass);
     }
 
-    .connection-badge .dot {
-      width: 7px; height: 7px;
+    .connection-status .dot {
+      width: 8px; height: 8px;
       border-radius: 50%;
       background: var(--warning);
-      animation: pulse-dot 2s infinite;
+      box-shadow: 0 0 8px var(--warning);
     }
 
-    .connection-badge.connected .dot {
+    .connection-status.connected .dot {
       background: var(--success);
-      animation: none;
+      box-shadow: 0 0 8px var(--success);
     }
 
-    @keyframes pulse-dot {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
+    /* ===== Shared Controls (Month & Tabs) ===== */
+    .shared-controls {
+      padding: 16px;
+      margin-bottom: 24px;
     }
 
-    /* ===== Main Card ===== */
-    .main-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-xl);
-      padding: 24px;
-      box-shadow: var(--shadow-card);
-      backdrop-filter: blur(20px);
-      transition: var(--transition);
-    }
-
-    @media (min-width: 768px) {
-      .main-card { padding: 36px; }
-    }
-
-    /* ===== Form Sections ===== */
-    .form-section { margin-bottom: 28px; }
-
-    .form-section:last-child { margin-bottom: 0; }
-
-    .section-label {
-      font-size: 0.78rem;
-      font-weight: 600;
-      color: var(--text-secondary);
-      text-transform: uppercase;
-      letter-spacing: 1.2px;
-      margin-bottom: 14px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .section-label i {
-      color: var(--accent-secondary);
-      font-size: 0.85rem;
-    }
-
-    .section-divider {
-      border: none;
-      height: 1px;
-      background: var(--border-color);
-      margin: 28px 0;
-    }
-
-    /* ===== Selection Grid ===== */
-    .selection-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 16px;
-    }
-
-    @media (min-width: 640px) {
-      .selection-grid { grid-template-columns: 1fr 1fr; }
-    }
-
-    .selection-card {
-      background: var(--bg-glass);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-lg);
-      padding: 18px;
-      transition: var(--transition);
-    }
-
-    .selection-card:hover,
-    .selection-card:focus-within {
-      border-color: rgba(73, 106, 237, 0.4);
-      box-shadow: 0 0 20px rgba(73, 106, 237, 0.08);
-    }
-
-    .field-label {
-      font-size: 0.8rem;
-      font-weight: 500;
-      color: var(--text-secondary);
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .field-label i { color: var(--accent-secondary); }
-
-    /* Input Styles */
-    .input-field {
-      width: 100%;
-      padding: 10px 14px;
-      background: var(--bg-input);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-md);
-      color: var(--text-primary);
-      font-family: 'Prompt', sans-serif;
-      font-size: 0.88rem;
-      transition: var(--transition);
-      outline: none;
-    }
-
-    .input-field:focus {
-      border-color: var(--border-focus);
-      box-shadow: 0 0 0 3px var(--accent-glow);
-    }
-
-    .input-field::placeholder { color: var(--text-muted); }
-    
-    /* Support color scheme for calendar picker inside inputs */
-    input[type="month"] {
-      color-scheme: light dark;
-    }
-
-    /* Search + Select combo */
-    .search-select-wrapper {
-      border-radius: var(--radius-md);
-      overflow: hidden;
-      border: 1px solid var(--border-color);
-      transition: var(--transition);
-    }
-
-    .search-select-wrapper:focus-within {
-      border-color: var(--border-focus);
-      box-shadow: 0 0 0 3px var(--accent-glow);
-    }
-
-    .search-input {
-      width: 100%;
-      padding: 10px 14px 10px 36px;
-      background: var(--bg-input);
-      border: none;
-      border-bottom: 1px solid var(--border-color);
-      color: var(--text-primary);
-      font-family: 'Prompt', sans-serif;
-      font-size: 0.85rem;
-      outline: none;
-    }
-
-    .search-input::placeholder { color: var(--text-muted); }
-
-    .search-icon {
-      position: absolute;
-      top: 10px; left: 12px;
-      color: var(--text-muted);
-      font-size: 0.8rem;
-      pointer-events: none;
-    }
-
-    .eq-select {
-      width: 100%;
-      height: 140px;
-      background: var(--bg-input);
-      border: none;
-      color: var(--text-primary);
-      font-family: 'Prompt', sans-serif;
-      font-size: 0.82rem;
-      outline: none;
-      overflow-y: auto;
-    }
-
-    .eq-select option {
-      padding: 8px 14px;
-      border-bottom: 1px solid var(--border-color);
-      cursor: pointer;
-    }
-
-    .eq-select option:hover,
-    .eq-select option:checked {
-      background: rgba(73, 106, 237, 0.15);
-    }
-
-    .eq-select::-webkit-scrollbar { width: 5px; }
-    .eq-select::-webkit-scrollbar-track { background: transparent; }
-    .eq-select::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 4px; }
-
-    /* Equipment status badges */
-    .eq-status-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 12px;
-      border-radius: var(--radius-sm);
-      font-size: 0.75rem;
-      font-weight: 500;
-      margin-top: 10px;
-      transition: var(--transition);
-    }
-
-    .eq-status-badge.uploaded {
-      background: var(--success-bg);
-      color: var(--success);
-      border: 1px solid rgba(16, 185, 129, 0.3);
-    }
-
-    .eq-status-badge.selected {
-      background: rgba(73, 106, 237, 0.1);
-      color: var(--accent-secondary);
-      border: 1px solid rgba(73, 106, 237, 0.3);
-    }
-
-    .loading-eq-status {
-      font-size: 0.72rem;
-      color: var(--accent-secondary);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    /* ===== Photo Upload Grid ===== */
-    .photo-header {
+    .month-picker-container {
       display: flex;
       align-items: center;
       justify-content: space-between;
       margin-bottom: 16px;
     }
 
-    .photo-header-title {
-      font-size: 0.85rem;
+    .month-label {
       font-weight: 600;
-      color: var(--text-primary);
+      font-size: 0.95rem;
       display: flex;
       align-items: center;
       gap: 8px;
     }
+    
+    .month-label i { color: var(--accent-blue); }
 
-    .photo-header-title i { color: var(--accent-secondary); }
-
-    .photo-count-badge {
-      font-size: 0.7rem;
-      padding: 4px 12px;
-      background: rgba(73, 106, 237, 0.1);
-      color: var(--accent-secondary);
-      border: 1px solid rgba(73, 106, 237, 0.2);
-      border-radius: 50px;
-      font-weight: 500;
-    }
-
-    .photo-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    @media (min-width: 768px) {
-      .photo-grid { grid-template-columns: repeat(4, 1fr); gap: 14px; }
-    }
-
-    .photo-box {
-      position: relative;
-      aspect-ratio: 1 / 1;
-      border: 2px dashed var(--border-color);
-      border-radius: var(--radius-lg);
-      background: var(--bg-glass);
-      cursor: pointer;
+    .month-input {
+      background: var(--bg-input);
+      border: 1px solid var(--border-light);
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 0.9rem;
+      outline: none;
+      color-scheme: light dark;
       transition: var(--transition);
+    }
+    
+    .month-input:focus {
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 3px var(--accent-blue-light);
+    }
+
+    /* iOS Segmented Control */
+    .segmented-control {
+      display: flex;
+      background: rgba(118, 118, 128, 0.12);
+      padding: 2px;
+      border-radius: 9px;
+      position: relative;
+    }
+
+    .segment-btn {
+      flex: 1;
+      border: none;
+      background: transparent;
+      padding: 6px 0;
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      cursor: pointer;
+      border-radius: 7px;
+      transition: all 0.2s ease;
+      position: relative;
+      z-index: 1;
+    }
+
+    .segment-btn.active {
+      background: var(--bg-secondary);
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12), 0 3px 1px rgba(0, 0, 0, 0.04);
+    }
+
+    /* ===== Upload Tab Content ===== */
+    .upload-section {
+      animation: fadeUp 0.4s ease-out;
+    }
+
+    .form-group {
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Equipment Select (iOS List style) */
+    .search-bar {
+      position: relative;
+      margin-bottom: 12px;
+    }
+    .search-bar i {
+      position: absolute;
+      left: 12px; top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+    }
+    .search-bar input {
+      width: 100%;
+      padding: 10px 12px 10px 36px;
+      background: var(--bg-input);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      color: var(--text-primary);
+      outline: none;
+      font-size: 0.95rem;
+      transition: var(--transition);
+    }
+    .search-bar input:focus {
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 3px var(--accent-blue-light);
+    }
+
+    .eq-list-wrapper {
+      background: var(--bg-input);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-light);
       overflow: hidden;
     }
 
-    .photo-box:hover {
-      border-color: rgba(73, 106, 237, 0.5);
-      background: rgba(73, 106, 237, 0.05);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    .eq-select {
+      width: 100%;
+      height: 180px;
+      border: none;
+      background: transparent;
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 0.9rem;
+      outline: none;
+      padding: 8px 0;
     }
 
-    .photo-box.has-photo {
-      border-style: solid;
-      border-color: var(--success);
-      border-width: 2px;
+    .eq-select option {
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border-light);
+      cursor: pointer;
+    }
+    .eq-select option:checked {
+      background: var(--accent-blue-light);
+      color: var(--accent-blue);
     }
 
-    .photo-box .box-number {
-      position: absolute;
-      top: 8px; left: 8px;
-      width: 22px; height: 22px;
-      border-radius: 6px;
-      background: rgba(0, 0, 0, 0.6);
-      color: #fff;
-      font-size: 0.65rem;
-      font-weight: 700;
+    /* Selected Badge */
+    .selected-badge {
       display: flex;
       align-items: center;
-      justify-content: center;
-      z-index: 10;
-      backdrop-filter: blur(8px);
+      gap: 8px;
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      font-weight: 500;
+      background: var(--accent-blue-light);
+      color: var(--accent-blue);
+      border: 1px solid rgba(0, 122, 255, 0.2);
+    }
+    .selected-badge.uploaded {
+      background: var(--success-light);
+      color: var(--success);
+      border-color: rgba(52, 199, 89, 0.2);
     }
 
-    .photo-box.has-photo .box-number {
-      background: rgba(16, 185, 129, 0.9);
+    /* Photo Grid */
+    .photo-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (min-width: 600px) {
+      .photo-grid { grid-template-columns: repeat(4, 1fr); }
     }
 
-    .photo-placeholder {
+    .photo-box {
+      aspect-ratio: 1;
+      background: var(--bg-input);
+      border: 1.5px dashed var(--text-muted);
+      border-radius: var(--radius-md);
+      position: relative;
+      overflow: hidden;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 100%;
-      padding: 12px;
       text-align: center;
-    }
-
-    .photo-placeholder .icon-circle {
-      width: 44px; height: 44px;
-      border-radius: 50%;
-      background: rgba(73, 106, 237, 0.1);
-      border: 1px solid rgba(73, 106, 237, 0.15);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 8px;
+      cursor: pointer;
       transition: var(--transition);
     }
 
-    .photo-box:hover .icon-circle {
-      background: rgba(73, 106, 237, 0.2);
-      transform: scale(1.05);
+    .photo-box:hover {
+      background: var(--bg-glass-heavy);
+      border-color: var(--accent-blue);
     }
-
-    .photo-placeholder .icon-circle i {
-      color: var(--accent-secondary);
-      font-size: 1rem;
-    }
-
-    .photo-placeholder .label {
-      font-size: 0.72rem;
-      font-weight: 500;
-      color: var(--text-secondary);
-      margin-bottom: 2px;
-    }
-
-    .photo-placeholder .hint {
-      font-size: 0.6rem;
-      color: var(--text-muted);
+    .photo-box.has-photo {
+      border-style: solid;
+      border-color: var(--success);
     }
 
     .photo-box input[type="file"] {
@@ -551,466 +380,469 @@
       inset: 0;
       opacity: 0;
       cursor: pointer;
-      z-index: 20;
+      z-index: 10;
     }
 
-    /* Photo preview */
+    .photo-box-icon {
+      font-size: 1.8rem;
+      color: var(--accent-blue);
+      margin-bottom: 8px;
+    }
+    .photo-box-label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
     .photo-preview {
-      width: 100%; height: 100%;
-      object-fit: cover;
-    }
-
-    .photo-info-overlay {
       position: absolute;
-      bottom: 0; left: 0; right: 0;
-      padding: 6px 8px;
-      background: linear-gradient(transparent, rgba(0,0,0,0.8));
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 5;
     }
 
-    .photo-info-overlay .size-info {
-      font-size: 0.58rem;
-      color: rgba(255, 255, 255, 0.9);
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .photo-info-overlay .saved-badge {
-      font-size: 0.55rem;
-      color: #34d399; /* lighter green for dark bg */
-      font-weight: 600;
-    }
-
-    /* ===== Submit Button ===== */
+    /* Submit Button */
     .submit-btn {
       width: 100%;
-      padding: 14px 24px;
-      background: var(--gradient-primary);
+      padding: 16px;
+      background: var(--accent-blue);
       color: #fff;
-      font-family: 'Prompt', sans-serif;
-      font-size: 0.95rem;
+      font-size: 1.05rem;
       font-weight: 600;
+      font-family: inherit;
       border: none;
-      border-radius: var(--radius-lg);
-      cursor: pointer;
+      border-radius: var(--radius-md);
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
       transition: var(--transition);
-      box-shadow: 0 4px 16px rgba(73, 106, 237, 0.3);
       margin-top: 8px;
     }
-
     .submit-btn:hover {
+      background: var(--accent-blue-hover);
       transform: translateY(-2px);
-      box-shadow: 0 8px 28px rgba(73, 106, 237, 0.4);
+      box-shadow: 0 6px 16px rgba(0, 122, 255, 0.4);
     }
 
-    .submit-btn:active {
-      transform: translateY(0);
+    /* ===== Status Tab Content ===== */
+    .status-section {
+      animation: fadeUp 0.4s ease-out;
     }
 
-    .submit-btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      transform: none;
+    .progress-card {
+      padding: 20px;
+      margin-bottom: 24px;
+      text-align: center;
     }
 
-    .submit-btn i { font-size: 1.1rem; }
+    .progress-title {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+    }
 
-    /* ===== Status Overlay (Loading & Result) ===== */
+    .progress-bar-bg {
+      width: 100%;
+      height: 12px;
+      background: var(--border-light);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #34c759, #32d74b);
+      border-radius: 10px;
+      width: 0%;
+      transition: width 1s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    .progress-stats {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    .stats-done { color: var(--success); }
+    .stats-pending { color: var(--danger); }
+
+    /* iOS Styled Lists */
+    .ios-list-group {
+      margin-bottom: 24px;
+    }
+    .ios-list-header {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin: 0 0 8px 16px;
+      letter-spacing: 0.5px;
+    }
+    .ios-list {
+      background: var(--bg-glass-heavy);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      list-style: none;
+      border: 1px solid var(--border-light);
+    }
+    .ios-list-item {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border-light);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.95rem;
+    }
+    .ios-list-item:last-child { border-bottom: none; }
+    
+    .ios-list-item .icon-done { color: var(--success); font-size: 1.1rem; }
+    .ios-list-item .icon-pending { color: var(--danger); font-size: 1.1rem; }
+    
+    .empty-state {
+      padding: 24px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    /* ===== Status Overlay ===== */
     .status-overlay {
       position: fixed;
       inset: 0;
-      background: var(--overlay-bg);
-      backdrop-filter: blur(12px);
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       z-index: 1000;
       display: none;
       align-items: center;
       justify-content: center;
       padding: 20px;
     }
-
     .status-overlay.active { display: flex; }
 
-    .status-card {
+    .status-modal {
       background: var(--bg-secondary);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-xl);
-      max-width: 400px;
       width: 100%;
-      padding: 40px 32px;
+      max-width: 340px;
+      padding: 32px 24px;
+      border-radius: var(--radius-xl);
       text-align: center;
-      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.2);
-      animation: slideUp 0.35s ease-out;
+      box-shadow: var(--shadow-lg);
+      animation: zoomIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(20px) scale(0.98); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
-    }
-
-    /* Spinner */
-    .spinner-container {
-      position: relative;
-      width: 64px; height: 64px;
-      margin: 0 auto 20px;
-    }
-
-    .spinner-ring {
-      position: absolute;
-      inset: 0;
-      border: 3px solid rgba(73, 106, 237, 0.1);
-      border-radius: 50%;
-    }
-
-    .spinner-ring-active {
-      position: absolute;
-      inset: 0;
-      border: 3px solid transparent;
-      border-top-color: var(--accent-primary);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    .status-title {
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: var(--text-primary);
-      margin-bottom: 8px;
-    }
-
-    .status-desc {
-      font-size: 0.82rem;
-      color: var(--text-secondary);
-      margin-bottom: 4px;
-    }
-
-    /* Result states */
-    .result-icon {
-      font-size: 3.5rem;
+    .status-modal .spinner {
+      font-size: 2.5rem;
+      color: var(--accent-blue);
       margin-bottom: 16px;
     }
 
-    .result-icon.success { color: var(--success); }
-    .result-icon.error { color: var(--danger); }
-
-    .result-message {
-      font-size: 0.82rem;
-      color: var(--text-secondary);
-      background: var(--bg-glass);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-md);
-      padding: 14px;
-      margin: 16px 0 24px;
-      line-height: 1.5;
+    .status-modal .result-icon {
+      font-size: 3.5rem;
+      margin-bottom: 16px;
     }
+    .status-modal .result-icon.success { color: var(--success); }
+    .status-modal .result-icon.error { color: var(--danger); }
 
-    .close-btn {
+    .status-modal h4 { font-size: 1.2rem; margin-bottom: 8px; }
+    .status-modal p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 24px; line-height: 1.4; }
+
+    .modal-close-btn {
       width: 100%;
       padding: 12px;
-      background: var(--bg-glass);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-md);
-      color: var(--text-secondary);
-      font-family: 'Prompt', sans-serif;
-      font-size: 0.85rem;
-      font-weight: 500;
+      background: var(--bg-body);
+      color: var(--accent-blue);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      font-family: inherit;
+      font-size: 1rem;
       cursor: pointer;
-      transition: var(--transition);
     }
 
-    .close-btn:hover {
-      background: rgba(73, 106, 237, 0.1);
-      color: var(--text-primary);
-      border-color: rgba(73, 106, 237, 0.3);
-    }
-
-    /* ===== Utility ===== */
+    /* Utilities */
     .hidden { display: none !important; }
-
-    .fade-in {
-      animation: fadeIn 0.3s ease-out;
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+    @keyframes zoomIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
     }
-
-    /* Custom scrollbar for whole page */
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: var(--bg-primary); }
-    ::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
-
-    /* Footer */
-    .app-footer {
-      text-align: center;
-      margin-top: 32px;
-      font-size: 0.7rem;
-      color: var(--text-muted);
-    }
-
-    .app-footer a { color: var(--accent-secondary); text-decoration: none; }
+    
+    .footer { text-align: center; padding-top: 20px; color: var(--text-muted); font-size: 0.75rem; }
   </style>
 </head>
 <body>
 
   <div class="app-container">
 
-    <!-- ===== Header ===== -->
+    <!-- Header -->
     <header class="app-header">
-      <div class="header-content">
-        <div>
-          <h1 class="header-title">
-            <i class="fa-solid fa-camera-retro"></i>
-            AODB Equipment Checksheet
-          </h1>
-          <p class="header-subtitle">ระบบจัดเก็บภาพถ่ายตรวจสอบสภาพอุปกรณ์ประจำเดือน</p>
-        </div>
-        <div class="connection-badge" id="connectionBadge">
-          <span class="dot" id="connectionDot"></span>
-          <span id="connectionText">กำลังเชื่อมต่อฐานข้อมูล...</span>
-        </div>
+      <div class="icon-container">
+        <i class="fa-solid fa-camera-rotate"></i>
+      </div>
+      <h1 class="header-title">AODB Checksheet</h1>
+      <p class="header-subtitle">ระบบจัดเก็บภาพถ่ายตรวจสอบสภาพอุปกรณ์</p>
+      
+      <div class="connection-status" id="connectionBadge">
+        <span class="dot" id="connectionDot"></span>
+        <span id="connectionText">กำลังเชื่อมต่อฐานข้อมูล...</span>
       </div>
     </header>
 
-    <!-- ===== Main Form Card ===== -->
-    <div class="main-card">
+    <!-- Shared Controls: Month & Tabs -->
+    <div class="glass-card shared-controls">
+      <div class="month-picker-container">
+        <div class="month-label"><i class="fa-solid fa-calendar-day"></i> รอบตรวจประจำเดือน</div>
+        <input type="month" id="monthInput" class="month-input" onchange="handleMonthChange(event)">
+      </div>
+
+      <div class="segmented-control">
+        <button class="segment-btn active" id="tabUploadBtn" onclick="switchTab('upload')">
+          <i class="fa-solid fa-cloud-arrow-up"></i> อัปโหลดภาพ
+        </button>
+        <button class="segment-btn" id="tabStatusBtn" onclick="switchTab('status')">
+          <i class="fa-solid fa-chart-pie"></i> สรุปสถานะ
+        </button>
+      </div>
+    </div>
+
+    <!-- ================= TAB 1: UPLOAD ================= -->
+    <div id="uploadView" class="upload-section">
       <form id="uploadForm" onsubmit="handleSubmit(event)">
-
-        <!-- Selection Section -->
-        <div class="form-section">
-          <div class="section-label">
-            <i class="fa-solid fa-sliders"></i> ข้อมูลการตรวจสอบ
+        
+        <!-- Selection -->
+        <div class="glass-card form-group">
+          <h3 class="section-title"><i class="fa-solid fa-server" style="color: var(--accent-blue);"></i> เลือกอุปกรณ์</h3>
+          
+          <div class="search-bar">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="searchEquipment" placeholder="ค้นหา (เช่น PC, Monitor)..." oninput="filterEquipment()">
           </div>
-          <div class="selection-grid">
-
-            <!-- Month Picker -->
-            <div class="selection-card">
-              <div class="field-label">
-                <i class="fa-regular fa-calendar-check"></i> รอบประจำเดือน
-              </div>
-              <input type="month" id="monthInput" required onchange="handleMonthChange(event)" class="input-field">
-            </div>
-
-            <!-- Equipment Selector -->
-            <div class="selection-card">
-              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-                <div class="field-label" style="margin-bottom:0;">
-                  <i class="fa-solid fa-server"></i> เลือกอุปกรณ์
-                </div>
-                <div class="loading-eq-status" id="loadingEqStatus">
-                  <i class="fa-solid fa-spinner fa-spin"></i> กำลังดึงประวัติ...
-                </div>
-              </div>
-              <div class="search-select-wrapper" style="position:relative;">
-                <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                <input type="text" id="searchEquipment" placeholder="ค้นหา (เช่น PC, Monitor)..." oninput="filterEquipment()" class="search-input">
-                <select id="equipmentSelect" size="5" required class="eq-select">
-                  <!-- Options populated dynamically -->
-                </select>
-              </div>
-              <div id="selectedItemDisplay" class="hidden"></div>
-            </div>
-
+          
+          <div class="eq-list-wrapper">
+            <select id="equipmentSelect" size="6" required class="eq-select">
+              <!-- Options populated dynamically -->
+            </select>
           </div>
+          
+          <div id="selectedItemDisplay" class="hidden selected-badge"></div>
         </div>
 
-        <hr class="section-divider">
-
-        <!-- Photo Upload Section -->
-        <div class="form-section">
-          <div class="photo-header">
-            <div class="photo-header-title">
-              <i class="fa-solid fa-images"></i> อัปโหลดรูปภาพประกอบ
-            </div>
-            <span class="photo-count-badge" id="photoCountBadge">0 / 4 รูป</span>
-          </div>
-
+        <!-- Photos -->
+        <div class="glass-card form-group">
+          <h3 class="section-title">
+            <span><i class="fa-solid fa-images" style="color: var(--accent-blue);"></i> รูปภาพประกอบ</span>
+            <span id="photoCountBadge" style="font-size: 0.8rem; font-weight: normal; color: var(--text-muted);">0/4</span>
+          </h3>
+          
           <div class="photo-grid">
-            <!-- Box 1: รูปอุปกรณ์ -->
+            <!-- Box 1 -->
             <div class="photo-box" id="photoBox0">
-              <span class="box-number">1</span>
-              <div class="photo-placeholder" id="previewContainer0">
-                <div class="icon-circle"><i class="fa-solid fa-box"></i></div>
-                <p class="label">รูปอุปกรณ์</p>
-                <p class="hint">แตะเพื่อถ่ายภาพ</p>
+              <div id="previewContainer0" style="display:contents;">
+                <i class="fa-solid fa-box photo-box-icon"></i>
+                <span class="photo-box-label">1. รูปอุปกรณ์</span>
               </div>
               <input type="file" accept="image/*" required onchange="handleFileChange(event, 0)">
             </div>
-
-            <!-- Box 2: รูปตำแหน่งติดตั้ง -->
+            <!-- Box 2 -->
             <div class="photo-box" id="photoBox1">
-              <span class="box-number">2</span>
-              <div class="photo-placeholder" id="previewContainer1">
-                <div class="icon-circle"><i class="fa-solid fa-map-location-dot"></i></div>
-                <p class="label">รูปตำแหน่งติดตั้ง</p>
-                <p class="hint">แตะเพื่อถ่ายภาพ</p>
+              <div id="previewContainer1" style="display:contents;">
+                <i class="fa-solid fa-map-location-dot photo-box-icon"></i>
+                <span class="photo-box-label">2. ตำแหน่งติดตั้ง</span>
               </div>
               <input type="file" accept="image/*" required onchange="handleFileChange(event, 1)">
             </div>
-
-            <!-- Box 3: รูปสถานะการทำงาน -->
+            <!-- Box 3 -->
             <div class="photo-box" id="photoBox2">
-              <span class="box-number">3</span>
-              <div class="photo-placeholder" id="previewContainer2">
-                <div class="icon-circle"><i class="fa-solid fa-heart-pulse"></i></div>
-                <p class="label">รูปสถานะการทำงาน</p>
-                <p class="hint">แตะเพื่อถ่ายภาพ</p>
+              <div id="previewContainer2" style="display:contents;">
+                <i class="fa-solid fa-heart-pulse photo-box-icon"></i>
+                <span class="photo-box-label">3. สถานะการทำงาน</span>
               </div>
               <input type="file" accept="image/*" required onchange="handleFileChange(event, 2)">
             </div>
-
-            <!-- Box 4: รูปทำความสะอาด -->
+            <!-- Box 4 -->
             <div class="photo-box" id="photoBox3">
-              <span class="box-number">4</span>
-              <div class="photo-placeholder" id="previewContainer3">
-                <div class="icon-circle"><i class="fa-solid fa-broom"></i></div>
-                <p class="label">รูปทำความสะอาด</p>
-                <p class="hint">แตะเพื่อถ่ายภาพ</p>
+              <div id="previewContainer3" style="display:contents;">
+                <i class="fa-solid fa-broom photo-box-icon"></i>
+                <span class="photo-box-label">4. ทำความสะอาด</span>
               </div>
               <input type="file" accept="image/*" required onchange="handleFileChange(event, 3)">
             </div>
           </div>
         </div>
 
-        <!-- Submit Button -->
         <button type="submit" id="submitBtn" class="submit-btn">
-          <i class="fa-solid fa-cloud-arrow-up"></i>
-          <span>ส่งข้อมูลรายงานรอบเดือน</span>
+          อัปโหลดข้อมูล
         </button>
-
       </form>
     </div>
 
-    <!-- Footer -->
-    <div class="app-footer">
-      AODB Preventive Maintenance System &bull; สนามบินอุบลราชธานี
+    <!-- ================= TAB 2: STATUS ================= -->
+    <div id="statusView" class="status-section hidden">
+      
+      <div class="glass-card progress-card">
+        <div class="progress-title">ความคืบหน้ารอบเดือน <span id="statusMonthDisplay" style="font-weight: 600;"></span></div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="progressBar"></div>
+        </div>
+        <div class="progress-stats">
+          <span class="stats-done" id="statsDoneTxt">0 สำเร็จ</span>
+          <span id="statsPercentTxt">0%</span>
+          <span class="stats-pending" id="statsPendingTxt">0 รออัปโหลด</span>
+        </div>
+      </div>
+
+      <div class="ios-list-group">
+        <div class="ios-list-header">ยังไม่ได้อัปโหลด <span id="pendingCountLabel">(0)</span></div>
+        <ul class="ios-list" id="pendingList">
+          <div class="empty-state">กำลังโหลดข้อมูล...</div>
+        </ul>
+      </div>
+
+      <div class="ios-list-group">
+        <div class="ios-list-header">อัปโหลดเรียบร้อย <span id="completedCountLabel">(0)</span></div>
+        <ul class="ios-list" id="completedList">
+          <div class="empty-state">ยังไม่มีรายการที่อัปโหลด</div>
+        </ul>
+      </div>
+      
     </div>
+
+    <div class="footer">AODB Preventive Maintenance System &bull; สนามบินอุบลราชธานี</div>
   </div>
 
-  <!-- ===== Status Overlay ===== -->
+  <!-- Modal Overlay -->
   <div class="status-overlay" id="statusOverlay">
-    <div class="status-card">
-      <!-- Loading State -->
+    <div class="status-modal">
+      
       <div id="loadingContent">
-        <div class="spinner-container">
-          <div class="spinner-ring"></div>
-          <div class="spinner-ring-active"></div>
-        </div>
-        <h4 class="status-title">กำลังอัปโหลดข้อมูล...</h4>
-        <p class="status-desc">ระบบกำลังบันทึกรูปภาพลง Google Drive และชีต</p>
-        <p class="status-desc" style="font-size:0.72rem;color:var(--text-muted);">กรุณาอย่าปิดหน้าจอ</p>
+        <div class="spinner"><i class="fa-solid fa-circle-notch fa-spin"></i></div>
+        <h4>กำลังอัปโหลด...</h4>
+        <p>กรุณารอสักครู่ ห้ามปิดหน้าจอนี้</p>
       </div>
-      <!-- Result State -->
+
       <div id="resultContent" class="hidden">
         <div id="resultIcon" class="result-icon"></div>
-        <h4 id="resultTitle" class="status-title"></h4>
-        <p id="resultDesc" class="result-message"></p>
-        <button onclick="closeOverlay()" class="close-btn">
-          <i class="fa-solid fa-xmark"></i> ปิดหน้าต่าง
-        </button>
+        <h4 id="resultTitle"></h4>
+        <p id="resultDesc"></p>
+        <button onclick="closeOverlay()" class="modal-close-btn">ปิด</button>
       </div>
+
     </div>
   </div>
 
   <script>
     // =========================================================
-    // การตั้งค่า API (สำคัญมาก)
-    // ให้นำลิงก์ Web App URL จาก Google Apps Script มาใส่ตรงนี้
+    // การตั้งค่า API (ใส่ลิงก์ Web App ตรงนี้)
     // =========================================================
     const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbz3BoXOo5LzDGA-2mfP9AEMZG22l1g5EXdnzWubYqNLFBbKMigBQGxZBzw6zdW8U17Y/exec';
 
-    // ===== Application State =====
+    // State
     let allEquipments = [];
     let uploadedEquipments = [];
     let base64Photos = [null, null, null, null];
     let photoCount = 0;
 
-    // ===== Compression Settings =====
+    // Config
     const COMPRESS_MAX_WIDTH = 1024;
     const COMPRESS_MAX_HEIGHT = 1024;
-    const COMPRESS_QUALITY = 0.8; // JPEG quality
+    const COMPRESS_QUALITY = 0.8;
 
-    // ===== Initialize App =====
     window.onload = function() {
-      // Set current month
+      // ตั้งค่าเดือนปัจจุบัน
       const now = new Date();
       const monthStr = now.toISOString().substring(0, 7);
       document.getElementById('monthInput').value = monthStr;
+      document.getElementById('statusMonthDisplay').innerText = monthStr;
 
-      // ดึงข้อมูลผ่าน Fetch API แทน google.script.run
+      // ดึงข้อมูล
       fetch(GAS_WEB_APP_URL + '?action=getEquipmentList')
-        .then(function(response) { return response.json(); })
-        .then(function(list) {
+        .then(res => res.json())
+        .then(list => {
           allEquipments = list;
           fetchUploadedEquipments(monthStr);
         })
-        .catch(function(error) {
-          console.error('API Error:', error);
-          document.getElementById('loadingEqStatus').classList.add('hidden');
+        .catch(err => {
+          console.error(err);
           document.getElementById('connectionText').innerText = 'ไม่สามารถเชื่อมต่อฐานข้อมูลได้';
           document.getElementById('connectionDot').style.background = 'var(--danger)';
-          alert('ไม่สามารถดึงข้อมูลจาก Google Sheets ได้ กรุณาตรวจสอบลิงก์ Web App URL ในโค้ดครับ');
+          document.getElementById('pendingList').innerHTML = `<div class="empty-state" style="color:var(--danger)">ดึงข้อมูลล้มเหลว</div>`;
         });
 
-      // Equipment selection handler
+      // Event Listener อุปกรณ์
       document.getElementById('equipmentSelect').addEventListener('change', function(e) {
         const display = document.getElementById('selectedItemDisplay');
         const selectedVal = e.target.value;
         const isUploaded = uploadedEquipments.includes(selectedVal);
 
+        display.classList.remove('hidden');
         if (isUploaded) {
-          display.innerHTML = '<i class="fa-solid fa-check-double"></i> ' + selectedVal + ' <span style="color:var(--success);font-weight:600;">(✅ อัปโหลดแล้วในรอบนี้)</span>';
-          display.className = 'eq-status-badge uploaded fade-in';
+          display.innerHTML = `<i class="fa-solid fa-check-circle"></i> <span>${selectedVal} (อัปโหลดแล้ว)</span>`;
+          display.className = 'selected-badge uploaded';
         } else {
-          display.innerHTML = '<i class="fa-solid fa-check"></i> เลือกแล้ว: ' + selectedVal;
-          display.className = 'eq-status-badge selected fade-in';
+          display.innerHTML = `<i class="fa-solid fa-server"></i> <span>${selectedVal}</span>`;
+          display.className = 'selected-badge';
         }
       });
     };
 
-    // ===== Month Change Handler =====
-    function handleMonthChange(event) {
-      const selectedMonth = event.target.value;
-      fetchUploadedEquipments(selectedMonth);
-      document.getElementById('selectedItemDisplay').className = 'hidden';
+    // เปลี่ยนหน้า Tab
+    function switchTab(tab) {
+      document.getElementById('tabUploadBtn').classList.remove('active');
+      document.getElementById('tabStatusBtn').classList.remove('active');
+      
+      if(tab === 'upload') {
+        document.getElementById('tabUploadBtn').classList.add('active');
+        document.getElementById('uploadView').classList.remove('hidden');
+        document.getElementById('statusView').classList.add('hidden');
+      } else {
+        document.getElementById('tabStatusBtn').classList.add('active');
+        document.getElementById('uploadView').classList.add('hidden');
+        document.getElementById('statusView').classList.remove('hidden');
+        renderStatusLists();
+      }
     }
 
-    // ===== Fetch Uploaded History =====
-    function fetchUploadedEquipments(month) {
-      document.getElementById('loadingEqStatus').classList.remove('hidden');
-      
-      // ดึงประวัติผ่าน Fetch API
-      fetch(GAS_WEB_APP_URL + '?action=getUploadedEquipments&month=' + month)
-        .then(function(response) { return response.json(); })
-        .then(function(uploadedList) {
-          uploadedEquipments = uploadedList;
-          document.getElementById('loadingEqStatus').classList.add('hidden');
+    // เปลี่ยนเดือน
+    function handleMonthChange(event) {
+      const selectedMonth = event.target.value;
+      document.getElementById('statusMonthDisplay').innerText = selectedMonth;
+      document.getElementById('selectedItemDisplay').classList.add('hidden');
+      fetchUploadedEquipments(selectedMonth);
+    }
 
-          // Update connection badge
-          var badge = document.getElementById('connectionBadge');
-          badge.classList.add('connected');
-          document.getElementById('connectionText').innerText = 'ข้อมูลเป็นปัจจุบัน (Online)';
-          document.getElementById('connectionDot').style.background = 'var(--success)';
+    // ดึงประวัติเดือนที่เลือก
+    function fetchUploadedEquipments(month) {
+      document.getElementById('connectionText').innerText = 'กำลังโหลดข้อมูล...';
+      document.getElementById('connectionBadge').classList.remove('connected');
+
+      fetch(GAS_WEB_APP_URL + '?action=getUploadedEquipments&month=' + month)
+        .then(res => res.json())
+        .then(uploadedList => {
+          uploadedEquipments = uploadedList;
+          
+          document.getElementById('connectionBadge').classList.add('connected');
+          document.getElementById('connectionText').innerText = 'ข้อมูลเชื่อมต่อเรียบร้อย';
 
           filterEquipment();
+          renderStatusLists();
         })
-        .catch(function(error) {
-           console.error('API Error:', error);
-           document.getElementById('loadingEqStatus').classList.add('hidden');
+        .catch(err => {
+           console.error(err);
+           document.getElementById('connectionText').innerText = 'โหลดข้อมูลสถานะล้มเหลว';
         });
     }
 
-    // ===== Render Equipment Options =====
+    // แสดงตัวเลือกอุปกรณ์ในหน้า Upload
     function renderEquipmentOptions(list) {
       if (!list) list = allEquipments;
       var select = document.getElementById('equipmentSelect');
@@ -1023,8 +855,6 @@
 
         if (isUploaded) {
           opt.textContent = item + ' ✅';
-          opt.style.color = 'var(--success)';
-          opt.style.fontWeight = '600';
         } else {
           opt.textContent = item;
         }
@@ -1032,22 +862,68 @@
       });
     }
 
-    // ===== Filter Equipment Search =====
+    // ค้นหา
     function filterEquipment() {
       var q = document.getElementById('searchEquipment').value.toLowerCase();
-      var filtered = allEquipments.filter(function(item) {
-        return item.toLowerCase().indexOf(q) !== -1;
-      });
+      var filtered = allEquipments.filter(item => item.toLowerCase().includes(q));
       renderEquipmentOptions(filtered);
     }
 
-    // ===== Image Compression Function =====
+    // สร้างรายการสถานะ (Tab 2)
+    function renderStatusLists() {
+      const pendingList = document.getElementById('pendingList');
+      const completedList = document.getElementById('completedList');
+      
+      pendingList.innerHTML = '';
+      completedList.innerHTML = '';
+
+      let pendingCount = 0;
+      let completedCount = 0;
+
+      if(allEquipments.length === 0) {
+        pendingList.innerHTML = `<div class="empty-state">กำลังโหลดข้อมูล...</div>`;
+        return;
+      }
+
+      allEquipments.forEach(eq => {
+        const li = document.createElement('li');
+        li.className = 'ios-list-item';
+        
+        if (uploadedEquipments.includes(eq)) {
+          li.innerHTML = `<i class="fa-solid fa-circle-check icon-done"></i> <span>${eq}</span>`;
+          completedList.appendChild(li);
+          completedCount++;
+        } else {
+          li.innerHTML = `<i class="fa-solid fa-circle-exclamation icon-pending"></i> <span>${eq}</span>`;
+          pendingList.appendChild(li);
+          pendingCount++;
+        }
+      });
+
+      if(completedCount === 0) completedList.innerHTML = `<div class="empty-state">ยังไม่มีรายการที่อัปโหลดในเดือนนี้</div>`;
+      if(pendingCount === 0) pendingList.innerHTML = `<div class="empty-state" style="color:var(--success)">ยอดเยี่ยม! อัปโหลดครบทุกรายการแล้ว</div>`;
+
+      // อัปเดตตัวเลข
+      document.getElementById('pendingCountLabel').innerText = `(${pendingCount})`;
+      document.getElementById('completedCountLabel').innerText = `(${completedCount})`;
+      
+      // อัปเดต Progress Bar
+      const total = allEquipments.length;
+      const percent = total === 0 ? 0 : Math.round((completedCount / total) * 100);
+      
+      document.getElementById('progressBar').style.width = percent + '%';
+      document.getElementById('statsDoneTxt').innerText = `${completedCount} สำเร็จ`;
+      document.getElementById('statsPendingTxt').innerText = `${pendingCount} รออัปโหลด`;
+      document.getElementById('statsPercentTxt').innerText = `${percent}%`;
+    }
+
+    // การบีบอัดภาพ
     function compressImage(file, maxWidth, maxHeight, quality) {
-      return new Promise(function(resolve, reject) {
+      return new Promise((resolve, reject) => {
         var reader = new FileReader();
-        reader.onload = function(e) {
+        reader.onload = e => {
           var img = new Image();
-          img.onload = function() {
+          img.onload = () => {
             var width = img.width;
             var height = img.height;
 
@@ -1061,39 +937,24 @@
             canvas.width = width;
             canvas.height = height;
             var ctx = canvas.getContext('2d');
-
             ctx.fillStyle = '#FFFFFF';
             ctx.fillRect(0, 0, width, height);
             ctx.drawImage(img, 0, 0, width, height);
 
-            var compressedBase64 = canvas.toDataURL('image/jpeg', quality);
-            
-            var originalSize = file.size;
-            var compressedSize = Math.round((compressedBase64.length - 'data:image/jpeg;base64,'.length) * 3 / 4);
-
             resolve({
-              base64: compressedBase64,
-              type: 'image/jpeg',
-              originalSize: originalSize,
-              compressedSize: compressedSize,
-              width: width,
-              height: height
+              base64: canvas.toDataURL('image/jpeg', quality),
+              type: 'image/jpeg'
             });
           };
-          img.onerror = function() { reject(new Error('ไม่สามารถอ่านไฟล์ภาพได้')); };
+          img.onerror = () => reject(new Error('อ่านไฟล์ภาพไม่ได้'));
           img.src = e.target.result;
         };
-        reader.onerror = function() { reject(new Error('ไม่สามารถอ่านไฟล์ได้')); };
+        reader.onerror = () => reject(new Error('อ่านไฟล์ไม่ได้'));
         reader.readAsDataURL(file);
       });
     }
 
-    function formatSize(bytes) {
-      if (bytes < 1024) return bytes + ' B';
-      if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
-      return (bytes / 1048576).toFixed(1) + ' MB';
-    }
-
+    // จัดการเลือกไฟล์
     function handleFileChange(event, index) {
       var file = event.target.files[0];
       if (!file) return;
@@ -1101,69 +962,37 @@
       var container = document.getElementById('previewContainer' + index);
       var box = document.getElementById('photoBox' + index);
 
-      container.innerHTML = '<div class="photo-placeholder"><div class="icon-circle"><i class="fa-solid fa-spinner fa-spin"></i></div><p class="label">กำลังบีบอัด...</p></div>';
+      container.innerHTML = '<i class="fa-solid fa-spinner fa-spin photo-box-icon"></i><span class="photo-box-label">กำลังบีบอัด...</span>';
 
       compressImage(file, COMPRESS_MAX_WIDTH, COMPRESS_MAX_HEIGHT, COMPRESS_QUALITY)
-        .then(function(result) {
+        .then(result => {
           base64Photos[index] = { base64: result.base64, type: result.type };
           box.classList.add('has-photo');
-
-          var savedPercent = Math.round((1 - result.compressedSize / result.originalSize) * 100);
-          if (savedPercent < 0) savedPercent = 0;
-
-          container.innerHTML = 
-            '<img src="' + result.base64 + '" class="photo-preview" alt="preview">' +
-            '<div class="photo-info-overlay">' +
-              '<span class="size-info">' +
-                '<i class="fa-solid fa-compress"></i> ' +
-                formatSize(result.originalSize) + ' → ' + formatSize(result.compressedSize) +
-              '</span>' +
-              '<span class="saved-badge">' +
-                '↓ ประหยัด ' + savedPercent + '% (' + result.width + '×' + result.height + 'px)' +
-              '</span>' +
-            '</div>';
-
+          container.innerHTML = `<img src="${result.base64}" class="photo-preview">`;
           updatePhotoCount();
         })
-        .catch(function(err) {
-          container.innerHTML = '<div class="photo-placeholder"><div class="icon-circle" style="background:rgba(239,68,68,0.1);border-color:rgba(239,68,68,0.2);"><i class="fa-solid fa-triangle-exclamation" style="color:var(--danger);"></i></div><p class="label" style="color:var(--danger);">เกิดข้อผิดพลาด</p><p class="hint">' + err.message + '</p></div>';
+        .catch(err => {
+          container.innerHTML = `<i class="fa-solid fa-triangle-exclamation photo-box-icon" style="color:var(--danger)"></i><span class="photo-box-label">Error</span>`;
         });
     }
 
     function updatePhotoCount() {
-      photoCount = base64Photos.filter(function(p) { return p !== null; }).length;
-      var badge = document.getElementById('photoCountBadge');
-      badge.textContent = photoCount + ' / 4 รูป';
-
-      if (photoCount === 4) {
-        badge.style.background = 'var(--success-bg)';
-        badge.style.color = 'var(--success)';
-        badge.style.borderColor = 'rgba(16, 185, 129, 0.3)';
-      } else {
-        badge.style.background = 'rgba(73, 106, 237, 0.1)';
-        badge.style.color = 'var(--accent-secondary)';
-        badge.style.borderColor = 'rgba(73, 106, 237, 0.2)';
-      }
+      photoCount = base64Photos.filter(p => p !== null).length;
+      document.getElementById('photoCountBadge').innerText = `${photoCount}/4`;
     }
 
-    // ===== Submit Form =====
+    // ส่งข้อมูล
     function handleSubmit(event) {
       event.preventDefault();
 
       var equipment = document.getElementById('equipmentSelect').value;
-      if (!equipment) {
-        alert('กรุณาเลือกอุปกรณ์จากรายการก่อน');
-        return;
-      }
-      if (base64Photos.indexOf(null) !== -1) {
-        alert('กรุณาถ่ายรูปหรือเลือกรูปให้ครบทั้ง 4 รูป');
-        return;
-      }
-      if (uploadedEquipments.indexOf(equipment) !== -1) {
-        if (!confirm('⚠️ อุปกรณ์ ' + equipment + ' เคยถูกอัปโหลดในรอบเดือนนี้ไปแล้ว\nยืนยันที่จะอัปโหลดซ้ำหรือไม่?')) return;
+      if (!equipment) return alert('กรุณาเลือกอุปกรณ์จากรายการก่อน');
+      if (base64Photos.includes(null)) return alert('กรุณาถ่ายรูปหรือเลือกรูปให้ครบทั้ง 4 รูป');
+      
+      if (uploadedEquipments.includes(equipment)) {
+        if (!confirm(`⚠️ ${equipment} เคยถูกอัปโหลดในรอบนี้แล้ว ยืนยันอัปโหลดซ้ำ?`)) return;
       }
 
-      // Show loading overlay
       var overlay = document.getElementById('statusOverlay');
       overlay.classList.add('active');
       document.getElementById('loadingContent').classList.remove('hidden');
@@ -1175,65 +1004,57 @@
         photos: base64Photos
       };
 
-      // ส่งข้อมูลผ่าน Fetch API (POST) แทน google.script.run
       fetch(GAS_WEB_APP_URL, {
         method: 'POST',
-        body: JSON.stringify({
-          action: 'uploadData',
-          payload: payload
-        })
+        body: JSON.stringify({ action: 'uploadData', payload: payload })
       })
-      .then(function(response) { return response.json(); })
-      .then(function(res) {
+      .then(res => res.json())
+      .then(res => {
+        document.getElementById('loadingContent').classList.add('hidden');
+        document.getElementById('resultContent').classList.remove('hidden');
+        
         if (res.success) {
-          if (uploadedEquipments.indexOf(equipment) === -1) uploadedEquipments.push(equipment);
+          if (!uploadedEquipments.includes(equipment)) uploadedEquipments.push(equipment);
 
-          document.getElementById('loadingContent').classList.add('hidden');
-          document.getElementById('resultContent').classList.remove('hidden');
           document.getElementById('resultIcon').className = 'result-icon success';
           document.getElementById('resultIcon').innerHTML = '<i class="fa-solid fa-circle-check"></i>';
           document.getElementById('resultTitle').innerText = 'บันทึกสำเร็จ!';
-          document.getElementById('resultDesc').innerText = res.message || 'รูปภาพและข้อมูลถูกส่งเข้าฐานข้อมูลเรียบร้อยแล้ว';
+          document.getElementById('resultDesc').innerText = 'ข้อมูลถูกส่งเข้าสู่ระบบเรียบร้อยแล้ว';
 
           document.getElementById('uploadForm').reset();
-          document.getElementById('selectedItemDisplay').className = 'hidden';
-          document.getElementById('monthInput').value = payload.month;
+          document.getElementById('selectedItemDisplay').classList.add('hidden');
           filterEquipment();
+          renderStatusLists(); // อัปเดตรายการหน้าสถานะ
           resetPreviews();
         } else {
-          document.getElementById('loadingContent').classList.add('hidden');
-          document.getElementById('resultContent').classList.remove('hidden');
           document.getElementById('resultIcon').className = 'result-icon error';
           document.getElementById('resultIcon').innerHTML = '<i class="fa-solid fa-circle-xmark"></i>';
-          document.getElementById('resultTitle').innerText = 'เกิดข้อผิดพลาด';
+          document.getElementById('resultTitle').innerText = 'ข้อผิดพลาดระบบ';
           document.getElementById('resultDesc').innerText = res.message;
         }
       })
-      .catch(function(err) {
-          console.error('Upload error:', err);
+      .catch(err => {
           document.getElementById('loadingContent').classList.add('hidden');
           document.getElementById('resultContent').classList.remove('hidden');
           document.getElementById('resultIcon').className = 'result-icon error';
           document.getElementById('resultIcon').innerHTML = '<i class="fa-solid fa-circle-xmark"></i>';
-          document.getElementById('resultTitle').innerText = 'ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้';
+          document.getElementById('resultTitle').innerText = 'เชื่อมต่อล้มเหลว';
           document.getElementById('resultDesc').innerText = err.message;
       });
     }
 
     function resetPreviews() {
       base64Photos = [null, null, null, null];
-      photoCount = 0;
       updatePhotoCount();
+      const labels = ['1. รูปอุปกรณ์', '2. ตำแหน่งติดตั้ง', '3. สถานะการทำงาน', '4. ทำความสะอาด'];
+      const icons = ['fa-box', 'fa-map-location-dot', 'fa-heart-pulse', 'fa-broom'];
 
-      var titles = ['รูปอุปกรณ์', 'รูปตำแหน่งติดตั้ง', 'รูปสถานะการทำงาน', 'รูปทำความสะอาด'];
-      var icons = ['fa-box', 'fa-map-location-dot', 'fa-heart-pulse', 'fa-broom'];
-
-      for (var i = 0; i < 4; i++) {
+      for (let i = 0; i < 4; i++) {
         document.getElementById('photoBox' + i).classList.remove('has-photo');
-        document.getElementById('previewContainer' + i).innerHTML =
-          '<div class="icon-circle"><i class="fa-solid ' + icons[i] + '"></i></div>' +
-          '<p class="label">' + titles[i] + '</p>' +
-          '<p class="hint">แตะเพื่อถ่ายภาพ</p>';
+        document.getElementById('previewContainer' + i).innerHTML = `
+          <i class="fa-solid ${icons[i]} photo-box-icon"></i>
+          <span class="photo-box-label">${labels[i]}</span>
+        `;
       }
     }
 

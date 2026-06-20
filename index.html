@@ -1,1108 +1,270 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AODB Checksheet Upload</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    /* ===== CSS Variables (Light Mode Default) ===== */
-    :root {
-      --bg-primary: #f8fafc;
-      --bg-secondary: #ffffff;
-      --bg-card: rgba(255, 255, 255, 0.85);
-      --bg-card-hover: rgba(255, 255, 255, 1);
-      --bg-input: #ffffff;
-      --bg-glass: rgba(0, 0, 0, 0.02);
-      --border-color: rgba(148, 163, 184, 0.3);
-      --border-focus: rgba(73, 106, 237, 0.6);
-      --text-primary: #0f172a;
-      --text-secondary: #475569;
-      --text-muted: #64748b;
-      --accent-primary: #3252DF;
-      --accent-secondary: #496AED;
-      --accent-glow: rgba(73, 106, 237, 0.2);
-      --success: #10b981;
-      --success-bg: rgba(16, 185, 129, 0.1);
-      --warning: #f59e0b;
-      --danger: #ef4444;
-      --gradient-primary: linear-gradient(135deg, #3252DF 0%, #4162E8 50%, #6D89F8 100%);
-      --gradient-header: linear-gradient(135deg, #16235B 0%, #3252DF 40%, #496AED 100%);
-      --gradient-success: linear-gradient(135deg, #059669 0%, #10b981 100%);
-      --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.06);
-      --shadow-glow: 0 0 30px rgba(73, 106, 237, 0.15);
-      --overlay-bg: rgba(255, 255, 255, 0.7);
-      
-      --radius-sm: 8px;
-      --radius-md: 12px;
-      --radius-lg: 16px;
-      --radius-xl: 20px;
-      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    /* ===== CSS Variables (Dark Mode) ===== */
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg-primary: #0f172a;
-        --bg-secondary: #1e293b;
-        --bg-card: rgba(30, 41, 59, 0.7);
-        --bg-card-hover: rgba(30, 41, 59, 0.9);
-        --bg-input: rgba(15, 23, 42, 0.6);
-        --bg-glass: rgba(255, 255, 255, 0.04);
-        --border-color: rgba(148, 163, 184, 0.15);
-        --border-focus: rgba(73, 106, 237, 0.5);
-        --text-primary: #f1f5f9;
-        --text-secondary: #94a3b8;
-        --text-muted: #64748b;
-        --accent-primary: #496AED;
-        --accent-secondary: #6D89F8;
-        --accent-glow: rgba(73, 106, 237, 0.25);
-        --gradient-primary: linear-gradient(135deg, #496AED 0%, #6D89F8 50%, #94ADFF 100%);
-        --gradient-header: linear-gradient(135deg, #0C1336 0%, #16235B 40%, #253B9E 100%);
-        --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.25);
-        --overlay-bg: rgba(0, 0, 0, 0.7);
-      }
-    }
-
-    /* ===== Reset & Base ===== */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: 'Prompt', 'Inter', -apple-system, sans-serif;
-      background: var(--bg-primary);
-      color: var(--text-primary);
-      min-height: 100vh;
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-      transition: background-color 0.3s ease, color 0.3s ease;
-    }
-
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: 
-        radial-gradient(ellipse at 20% 50%, rgba(73, 106, 237, 0.05) 0%, transparent 60%),
-        radial-gradient(ellipse at 80% 20%, rgba(109, 137, 248, 0.04) 0%, transparent 50%),
-        radial-gradient(ellipse at 50% 80%, rgba(59, 130, 246, 0.03) 0%, transparent 50%);
-      pointer-events: none;
-      z-index: 0;
-      transition: background 0.3s ease;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      body::before {
-        background: 
-          radial-gradient(ellipse at 20% 50%, rgba(73, 106, 237, 0.08) 0%, transparent 60%),
-          radial-gradient(ellipse at 80% 20%, rgba(109, 137, 248, 0.06) 0%, transparent 50%),
-          radial-gradient(ellipse at 50% 80%, rgba(59, 130, 246, 0.05) 0%, transparent 50%);
-      }
-    }
-
-    .app-container {
-      position: relative;
-      z-index: 1;
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 16px 16px 40px;
-    }
-
-    @media (min-width: 768px) {
-      .app-container { padding: 32px 24px 60px; }
-    }
-
-    .app-header {
-      background: var(--gradient-header);
-      border-radius: var(--radius-xl);
-      padding: 28px 24px;
-      margin-bottom: 24px;
-      border: 1px solid rgba(73, 106, 237, 0.2);
-      box-shadow: var(--shadow-glow);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .app-header::before {
-      content: '';
-      position: absolute;
-      top: -50%; right: -20%;
-      width: 300px; height: 300px;
-      background: radial-gradient(circle, rgba(109, 137, 248, 0.15), transparent 70%);
-      pointer-events: none;
-    }
-
-    .app-header::after {
-      content: '';
-      position: absolute;
-      bottom: -30%; left: -10%;
-      width: 200px; height: 200px;
-      background: radial-gradient(circle, rgba(73, 106, 237, 0.12), transparent 70%);
-      pointer-events: none;
-    }
-
-    .header-content {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    @media (min-width: 768px) {
-      .header-content {
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-      }
-    }
-
-    .header-title {
-      font-size: 1.35rem;
-      font-weight: 700;
-      color: #ffffff;
-      margin-bottom: 4px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .header-title i {
-      font-size: 1.5rem;
-      background: linear-gradient(135deg, #94ADFF, #B8C8FF);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .header-subtitle {
-      font-size: 0.82rem;
-      color: rgba(255, 255, 255, 0.8);
-      font-weight: 300;
-    }
-
-    .connection-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 16px;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 50px;
-      font-size: 0.75rem;
-      color: #ffffff;
-      backdrop-filter: blur(12px);
-      white-space: nowrap;
-    }
-
-    .connection-badge .dot {
-      width: 7px; height: 7px;
-      border-radius: 50%;
-      background: var(--warning);
-      animation: pulse-dot 2s infinite;
-    }
-
-    .connection-badge.connected .dot {
-      background: var(--success);
-      animation: none;
-    }
-
-    @keyframes pulse-dot {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
-    }
-
-    .main-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-xl);
-      padding: 24px;
-      box-shadow: var(--shadow-card);
-      backdrop-filter: blur(20px);
-      transition: var(--transition);
-    }
-
-    @media (min-width: 768px) {
-      .main-card { padding: 36px; }
-    }
-
-    .form-section { margin-bottom: 28px; }
-    .form-section:last-child { margin-bottom: 0; }
-
-    .section-label {
-      font-size: 0.78rem;
-      font-weight: 600;
-      color: var(--text-secondary);
-      text-transform: uppercase;
-      letter-spacing: 1.2px;
-      margin-bottom: 14px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .section-label i { color: var(--accent-secondary); font-size: 0.85rem; }
-    .section-divider { border: none; height: 1px; background: var(--border-color); margin: 28px 0; }
-
-    .selection-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 16px;
-    }
-
-    @media (min-width: 640px) {
-      .selection-grid { grid-template-columns: 1fr 1fr; }
-    }
-
-    .selection-card {
-      background: var(--bg-glass);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-lg);
-      padding: 18px;
-      transition: var(--transition);
-    }
-
-    .selection-card:hover,
-    .selection-card:focus-within {
-      border-color: rgba(73, 106, 237, 0.4);
-      box-shadow: 0 0 20px rgba(73, 106, 237, 0.08);
-    }
-
-    .field-label {
-      font-size: 0.8rem;
-      font-weight: 500;
-      color: var(--text-secondary);
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .field-label i { color: var(--accent-secondary); }
-
-    .input-field {
-      width: 100%;
-      padding: 10px 14px;
-      background: var(--bg-input);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-md);
-      color: var(--text-primary);
-      font-family: 'Prompt', sans-serif;
-      font-size: 0.88rem;
-      transition: var(--transition);
-      outline: none;
-    }
-
-    .input-field:focus {
-      border-color: var(--border-focus);
-      box-shadow: 0 0 0 3px var(--accent-glow);
-    }
-
-    .input-field::placeholder { color: var(--text-muted); }
-    input[type="month"] { color-scheme: light dark; }
-
-    .search-select-wrapper {
-      border-radius: var(--radius-md);
-      overflow: hidden;
-      border: 1px solid var(--border-color);
-      transition: var(--transition);
-    }
-
-    .search-select-wrapper:focus-within {
-      border-color: var(--border-focus);
-      box-shadow: 0 0 0 3px var(--accent-glow);
-    }
-
-    .search-input {
-      width: 100%;
-      padding: 10px 14px 10px 36px;
-      background: var(--bg-input);
-      border: none;
-      border-bottom: 1px solid var(--border-color);
-      color: var(--text-primary);
-      font-family: 'Prompt', sans-serif;
-      font-size: 0.85rem;
-      outline: none;
-    }
-
-    .search-input::placeholder { color: var(--text-muted); }
-
-    .search-icon {
-      position: absolute;
-      top: 10px; left: 12px;
-      color: var(--text-muted);
-      font-size: 0.8rem;
-      pointer-events: none;
-    }
-
-    .eq-select {
-      width: 100%;
-      height: 140px;
-      background: var(--bg-input);
-      border: none;
-      color: var(--text-primary);
-      font-family: 'Prompt', sans-serif;
-      font-size: 0.82rem;
-      outline: none;
-      overflow-y: auto;
-    }
-
-    .eq-select option {
-      padding: 8px 14px;
-      border-bottom: 1px solid var(--border-color);
-      cursor: pointer;
-    }
-
-    .eq-select option:hover,
-    .eq-select option:checked {
-      background: rgba(73, 106, 237, 0.15);
-    }
-
-    .eq-select::-webkit-scrollbar { width: 5px; }
-    .eq-select::-webkit-scrollbar-track { background: transparent; }
-    .eq-select::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 4px; }
-
-    .eq-status-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 12px;
-      border-radius: var(--radius-sm);
-      font-size: 0.75rem;
-      font-weight: 500;
-      margin-top: 10px;
-      transition: var(--transition);
-    }
-
-    .eq-status-badge.uploaded {
-      background: var(--success-bg);
-      color: var(--success);
-      border: 1px solid rgba(16, 185, 129, 0.3);
-    }
-
-    .eq-status-badge.selected {
-      background: rgba(73, 106, 237, 0.1);
-      color: var(--accent-secondary);
-      border: 1px solid rgba(73, 106, 237, 0.3);
-    }
-
-    .loading-eq-status {
-      font-size: 0.72rem;
-      color: var(--accent-secondary);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .photo-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 16px;
-    }
-
-    .photo-header-title {
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--text-primary);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .photo-header-title i { color: var(--accent-secondary); }
-
-    .photo-count-badge {
-      font-size: 0.7rem;
-      padding: 4px 12px;
-      background: rgba(73, 106, 237, 0.1);
-      color: var(--accent-secondary);
-      border: 1px solid rgba(73, 106, 237, 0.2);
-      border-radius: 50px;
-      font-weight: 500;
-    }
-
-    .photo-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    @media (min-width: 768px) {
-      .photo-grid { grid-template-columns: repeat(4, 1fr); gap: 14px; }
-    }
-
-    .photo-box {
-      position: relative;
-      aspect-ratio: 1 / 1;
-      border: 2px dashed var(--border-color);
-      border-radius: var(--radius-lg);
-      background: var(--bg-glass);
-      cursor: pointer;
-      transition: var(--transition);
-      overflow: hidden;
-    }
-
-    .photo-box:hover {
-      border-color: rgba(73, 106, 237, 0.5);
-      background: rgba(73, 106, 237, 0.05);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-    }
-
-    .photo-box.has-photo {
-      border-style: solid;
-      border-color: var(--success);
-      border-width: 2px;
-    }
-
-    .photo-box .box-number {
-      position: absolute;
-      top: 8px; left: 8px;
-      width: 22px; height: 22px;
-      border-radius: 6px;
-      background: rgba(0, 0, 0, 0.6);
-      color: #fff;
-      font-size: 0.65rem;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 10;
-      backdrop-filter: blur(8px);
-    }
-
-    .photo-box.has-photo .box-number { background: rgba(16, 185, 129, 0.9); }
-
-    .photo-placeholder {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100%;
-      padding: 12px;
-      text-align: center;
-    }
-
-    .photo-placeholder .icon-circle {
-      width: 44px; height: 44px;
-      border-radius: 50%;
-      background: rgba(73, 106, 237, 0.1);
-      border: 1px solid rgba(73, 106, 237, 0.15);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 8px;
-      transition: var(--transition);
-    }
-
-    .photo-box:hover .icon-circle {
-      background: rgba(73, 106, 237, 0.2);
-      transform: scale(1.05);
-    }
-
-    .photo-placeholder .icon-circle i { color: var(--accent-secondary); font-size: 1rem; }
-    .photo-placeholder .label { font-size: 0.72rem; font-weight: 500; color: var(--text-secondary); margin-bottom: 2px; }
-    .photo-placeholder .hint { font-size: 0.6rem; color: var(--text-muted); }
-
-    .photo-box input[type="file"] {
-      position: absolute;
-      inset: 0;
-      opacity: 0;
-      cursor: pointer;
-      z-index: 20;
-    }
-
-    .photo-preview { width: 100%; height: 100%; object-fit: cover; }
-
-    .photo-info-overlay {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      padding: 6px 8px;
-      background: linear-gradient(transparent, rgba(0,0,0,0.8));
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .photo-info-overlay .size-info {
-      font-size: 0.58rem;
-      color: rgba(255, 255, 255, 0.9);
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .photo-info-overlay .saved-badge { font-size: 0.55rem; color: #34d399; font-weight: 600; }
-
-    .submit-btn {
-      width: 100%;
-      padding: 14px 24px;
-      background: var(--gradient-primary);
-      color: #fff;
-      font-family: 'Prompt', sans-serif;
-      font-size: 0.95rem;
-      font-weight: 600;
-      border: none;
-      border-radius: var(--radius-lg);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      transition: var(--transition);
-      box-shadow: 0 4px 16px rgba(73, 106, 237, 0.3);
-      margin-top: 8px;
-    }
-
-    .submit-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 28px rgba(73, 106, 237, 0.4);
-    }
-
-    .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-    .submit-btn i { font-size: 1.1rem; }
-
-    .status-overlay {
-      position: fixed;
-      inset: 0;
-      background: var(--overlay-bg);
-      backdrop-filter: blur(12px);
-      z-index: 1000;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-
-    .status-overlay.active { display: flex; }
-
-    .status-card {
-      background: var(--bg-secondary);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-xl);
-      max-width: 400px;
-      width: 100%;
-      padding: 40px 32px;
-      text-align: center;
-      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.2);
-      animation: slideUp 0.35s ease-out;
-    }
-
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(20px) scale(0.98); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
-    }
-
-    .spinner-container { position: relative; width: 64px; height: 64px; margin: 0 auto 20px; }
-    .spinner-ring { position: absolute; inset: 0; border: 3px solid rgba(73, 106, 237, 0.1); border-radius: 50%; }
-    .spinner-ring-active {
-      position: absolute;
-      inset: 0;
-      border: 3px solid transparent;
-      border-top-color: var(--accent-primary);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .status-title { font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 8px; }
-    .status-desc { font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 4px; }
-
-    .result-icon { font-size: 3.5rem; margin-bottom: 16px; }
-    .result-icon.success { color: var(--success); }
-    .result-icon.error { color: var(--danger); }
-
-    .result-message {
-      font-size: 0.82rem;
-      color: var(--text-secondary);
-      background: var(--bg-glass);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-md);
-      padding: 14px;
-      margin: 16px 0 24px;
-      line-height: 1.5;
-    }
-
-    .close-btn {
-      width: 100%;
-      padding: 12px;
-      background: var(--bg-glass);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-md);
-      color: var(--text-secondary);
-      font-family: 'Prompt', sans-serif;
-      font-size: 0.85rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: var(--transition);
-    }
-
-    .close-btn:hover {
-      background: rgba(73, 106, 237, 0.1);
-      color: var(--text-primary);
-      border-color: rgba(73, 106, 237, 0.3);
-    }
-
-    .hidden { display: none !important; }
-    .fade-in { animation: fadeIn 0.3s ease-out; }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: var(--bg-primary); }
-    ::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
-
-    .app-footer { text-align: center; margin-top: 32px; font-size: 0.7rem; color: var(--text-muted); }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบบันทึกรูปภาพอุปกรณ์ประจำเดือน</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding-bottom: 50px;
+        }
+        .main-card {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border: none;
+            margin-top: 30px;
+        }
+        .card-header-custom {
+            background-color: #198754;
+            color: white;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .photo-box {
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            background: #fafafa;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-bottom: 15px;
+        }
+        .photo-box:hover {
+            border-color: #198754;
+            background: #f0fdf4;
+        }
+        .preview-img {
+            max-width: 100%;
+            max-height: 150px;
+            margin-top: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+        .status-badge {
+            font-size: 0.85em;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+    </style>
 </head>
 <body>
 
-  <div class="app-container">
-    <header class="app-header">
-      <div class="header-content">
-        <div>
-          <h1 class="header-title">
-            <i class="fa-solid fa-camera-retro"></i>
-            AODB Equipment Checksheet
-          </h1>
-          <p class="header-subtitle">ระบบจัดเก็บภาพถ่ายตรวจสอบสภาพอุปกรณ์ประจำเดือน</p>
+<div class="container max-width-md" style="max-width: 600px;">
+    <div class="card main-card">
+        <div class="card-header-custom">
+            <h4 class="mb-0">📸 ระบบบันทึกรูปภาพอุปกรณ์ประจำเดือน</h4>
+            <small>Ubon Ratchathani Airport (UBP)</small>
         </div>
-        <div class="connection-badge" id="connectionBadge">
-          <span class="dot" id="connectionDot"></span>
-          <span id="connectionText">กำลังเชื่อมต่อฐานข้อมูล...</span>
-        </div>
-      </div>
-    </header>
-
-    <div class="main-card">
-      <form id="uploadForm" onsubmit="handleSubmit(event)">
-        <div class="form-section">
-          <div class="section-label">
-            <i class="fa-solid fa-sliders"></i> ข้อมูลการตรวจสอบ
-          </div>
-          <div class="selection-grid">
-            <div class="selection-card">
-              <div class="field-label">
-                <i class="fa-regular fa-calendar-check"></i> รอบประจำเดือน
-              </div>
-              <input type="month" id="monthInput" required onchange="handleMonthChange(event)" class="input-field">
+        <div class="card-body p-4">
+            
+            <div id="connectionStatus" class="alert alert-warning text-center py-2 mb-3">
+                ⏳ กำลังเชื่อมต่อฐานข้อมูล...
             </div>
 
-            <div class="selection-card">
-              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-                <div class="field-label" style="margin-bottom:0;">
-                  <i class="fa-solid fa-server"></i> เลือกอุปกรณ์
+            <div class="mb-3">
+                <label class="form-label fw-bold">1. เลือกรอบประจำเดือน</label>
+                <input type="month" id="monthInput" class="form-control" onchange="checkUploadHistory()">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">2. เลือกอุปกรณ์</label>
+                <select id="equipmentSelect" class="form-select" disabled>
+                    <option value="">-- กรุณาเลือกอุปกรณ์ --</option>
+                </select>
+                <div id="historyBadge" class="mt-2"></div>
+            </div>
+
+            <div class="mb-4 d-none" id="photoSection">
+                <label class="form-label fw-bold">3. แนบรูปถ่ายอัปเดต (ครบ 4 มุม)</label>
+                
+                <div class="row">
+                    <div class="col-6">
+                        <div class="photo-box" onclick="document.getElementById('file1').click()">
+                            <span>1. Device (ตัวเครื่อง)</span>
+                            <input type="file" id="file1" accept="image/*" class="d-none" onchange="handleFile(this, 0)">
+                            <img id="prev0" class="preview-img">
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="photo-box" onclick="document.getElementById('file2').click()">
+                            <span>2. Location (ตำแหน่งติดตั้ง)</span>
+                            <input type="file" id="file2" accept="image/*" class="d-none" onchange="handleFile(this, 1)">
+                            <img id="prev1" class="preview-img">
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="photo-box" onclick="document.getElementById('file3').click()">
+                            <span>3. Status (หน้าจอสถานะ)</span>
+                            <input type="file" id="file3" accept="image/*" class="d-none" onchange="handleFile(this, 2)">
+                            <img id="prev2" class="preview-img">
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="photo-box" onclick="document.getElementById('file4').click()">
+                            <span>4. Cleaning (การทำความสะอาด)</span>
+                            <input type="file" id="file4" accept="image/*" class="d-none" onchange="handleFile(this, 3)">
+                            <img id="prev3" class="preview-img">
+                        </div>
+                    </div>
                 </div>
-                <div class="loading-eq-status" id="loadingEqStatus">
-                  <i class="fa-solid fa-spinner fa-spin"></i> กำลังโหลด...
-                </div>
-              </div>
-              <div class="search-select-wrapper" style="position:relative;">
-                <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                <input type="text" id="searchEquipment" placeholder="ค้นหา (เช่น PC, Monitor)..." oninput="filterEquipment()" class="search-input">
-                <select id="equipmentSelect" size="5" required class="eq-select">
-                  </select>
-              </div>
-              <div id="selectedItemDisplay" class="hidden"></div>
+
+                <button id="submitBtn" class="btn btn-success w-100 py-2 mt-3" onclick="submitData()">💾 บันทึกข้อมูลและส่งแจ้งเตือน</button>
             </div>
-          </div>
+
         </div>
-
-        <hr class="section-divider">
-
-        <div class="form-section">
-          <div class="photo-header">
-            <div class="photo-header-title">
-              <i class="fa-solid fa-images"></i> อัปโหลดรูปภาพประกอบ
-            </div>
-            <span class="photo-count-badge" id="photoCountBadge">0 / 4 รูป</span>
-          </div>
-
-          <div class="photo-grid">
-            <div class="photo-box" id="photoBox0">
-              <span class="box-number">1</span>
-              <div class="photo-placeholder" id="previewContainer0">
-                <div class="icon-circle"><i class="fa-solid fa-box"></i></div>
-                <p class="label">รูปอุปกรณ์</p>
-                <p class="hint">แตะเพื่อถ่ายภาพ</p>
-              </div>
-              <input type="file" accept="image/*" required onchange="handleFileChange(event, 0)">
-            </div>
-
-            <div class="photo-box" id="photoBox1">
-              <span class="box-number">2</span>
-              <div class="photo-placeholder" id="previewContainer1">
-                <div class="icon-circle"><i class="fa-solid fa-map-location-dot"></i></div>
-                <p class="label">รูปตำแหน่งติดตั้ง</p>
-                <p class="hint">แตะเพื่อถ่ายภาพ</p>
-              </div>
-              <input type="file" accept="image/*" required onchange="handleFileChange(event, 1)">
-            </div>
-
-            <div class="photo-box" id="photoBox2">
-              <span class="box-number">3</span>
-              <div class="photo-placeholder" id="previewContainer2">
-                <div class="icon-circle"><i class="fa-solid fa-heart-pulse"></i></div>
-                <p class="label">รูปสถานะการทำงาน</p>
-                <p class="hint">แตะเพื่อถ่ายภาพ</p>
-              </div>
-              <input type="file" accept="image/*" required onchange="handleFileChange(event, 2)">
-            </div>
-
-            <div class="photo-box" id="photoBox3">
-              <span class="box-number">4</span>
-              <div class="photo-placeholder" id="previewContainer3">
-                <div class="icon-circle"><i class="fa-solid fa-broom"></i></div>
-                <p class="label">รูปทำความสะอาด</p>
-                <p class="hint">แตะเพื่อถ่ายภาพ</p>
-              </div>
-              <input type="file" accept="image/*" required onchange="handleFileChange(event, 3)">
-            </div>
-          </div>
-        </div>
-
-        <button type="submit" id="submitBtn" class="submit-btn">
-          <i class="fa-solid fa-cloud-arrow-up"></i>
-          <span>ส่งข้อมูลรายงานรอบเดือน</span>
-        </button>
-      </form>
     </div>
+</div>
 
-    <div class="app-footer">
-      AODB Preventive Maintenance System &bull; สนามบินอุบลราชธานี
-    </div>
-  </div>
-
-  <div class="status-overlay" id="statusOverlay">
-    <div class="status-card">
-      <div id="loadingContent">
-        <div class="spinner-container">
-          <div class="spinner-ring"></div>
-          <div class="spinner-ring-active"></div>
-        </div>
-        <h4 class="status-title">กำลังอัปโหลดข้อมูล...</h4>
-        <p class="status-desc">ระบบกำลังบันทึกรูปภาพลง Google Drive และชีท</p>
-        <p class="status-desc" style="font-size:0.72rem;color:var(--text-muted);">กรุณาอย่าปิดหน้าจอ</p>
-      </div>
-      <div id="resultContent" class="hidden">
-        <div id="resultIcon" class="result-icon"></div>
-        <h4 id="resultTitle" class="status-title"></h4>
-        <p id="resultDesc" class="result-message"></p>
-        <button onclick="closeOverlay()" class="close-btn">
-          <i class="fa-solid fa-xmark"></i> ปิดหน้าต่าง
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    // 🔗 วางลิงก์ Google Apps Script Web App ของคุณที่นี่
-    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycby7KYpkcZpnExecIIjAbDADsjk3ZSFt5yYhu-aXaIuvTJibLZ2sfcr7WgZSAv_obr9L/exec';
-
-    // ===== Application State =====
-    let allEquipments = [];
-    let uploadedEquipments = [];
+<script>
+    // ⚠️ ระบุลิงก์ส่วนขยาย Web App (/exec) ของคุณตรงนี้
+    const API_URL = 'https://script.google.com/macros/s/AKfycby7KYpkcZpnExecIIjAbDADsjk3ZSFt5yYhu-aXaIuvTJibLZ2sfcr7WgZSAv_obr9L/exec';
+    
+    let equipmentList = [];
+    let uploadedList = [];
     let base64Photos = [null, null, null, null];
-    let photoCount = 0;
 
-    const COMPRESS_MAX_WIDTH = 1024;
-    const COMPRESS_MAX_HEIGHT = 1024;
-    const COMPRESS_QUALITY = 0.8;
-
-    // ===== Initialize App =====
+    // โหลดรายชื่ออุปกรณ์เริ่มต้นทันทีเมื่อเปิดหน้าเว็บ
     window.onload = function() {
-      const now = new Date();
-      const monthStr = now.toISOString().substring(0, 7);
-      document.getElementById('monthInput').value = monthStr;
+        // กำหนดค่าเดือนปัจจุบันเป็นค่าเริ่มต้น
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        document.getElementById('monthInput').value = `${year}-${month}`;
 
-      // โหลดรายชื่ออุปกรณ์และประวัติผ่าน API ของ Google Apps Script
-      loadInitialData(monthStr);
+        fetch(`${API_URL}?action=getEquipmentList`)
+        .then(res => res.json())
+        .then(data => {
+            equipmentList = data;
+            const select = document.getElementById('equipmentSelect');
+            data.forEach(eq => {
+                let opt = document.createElement('option');
+                opt.value = eq;
+                opt.innerText = eq;
+                select.appendChild(opt);
+            });
+            
+            document.getElementById('connectionStatus').className = "alert alert-success text-center py-2 mb-3";
+            document.getElementById('connectionStatus').innerText = "✅ เชื่อมต่อฐานข้อมูลสำเร็จ";
+            select.disabled = false;
+            document.getElementById('photoSection').classList.remove('d-none');
+            
+            checkUploadHistory(); // โหลดข้อมูลประวัติเดือนเริ่มต้น
+        })
+        .catch(err => {
+            document.getElementById('connectionStatus').className = "alert alert-danger text-center py-2 mb-3";
+            document.getElementById('connectionStatus').innerText = "❌ เกิดข้อผิดพลาดในการดึงฐานข้อมูล";
+            console.error(err);
+        });
 
-      document.getElementById('equipmentSelect').addEventListener('change', function(e) {
-        const display = document.getElementById('selectedItemDisplay');
-        const selectedVal = e.target.value;
-        const isUploaded = uploadedEquipments.includes(selectedVal);
-
-        if (isUploaded) {
-          display.innerHTML = '<i class="fa-solid fa-check-double"></i> ' + selectedVal + ' <span style="color:var(--success);font-weight:600;">(✅ อัปโหลดแล้วในรอบนี้)</span>';
-          display.className = 'eq-status-badge uploaded fade-in';
-        } else {
-          display.innerHTML = '<i class="fa-solid fa-check"></i> เลือกแล้ว: ' + selectedVal;
-          display.className = 'eq-status-badge selected fade-in';
-        }
-      });
+        document.getElementById('equipmentSelect').addEventListener('change', showEquipmentStatus);
     };
 
-    // ===== โหลดข้อมูลรายชื่ออุปกรณ์ครั้งแรก =====
-    function loadInitialData(month) {
-      document.getElementById('loadingEqStatus').classList.remove('hidden');
-      
-      // ดึงรายชื่ออุปกรณ์ทั้งหมด
-      fetch(`${WEB_APP_URL}?action=getEquipmentList`)
+    // เช็คประวัติการอัปโหลดเมื่อมีการเปลี่ยนเดือน
+    function checkUploadHistory() {
+        const month = document.getElementById('monthInput').value;
+        if(!month) return;
+        
+        const badge = document.getElementById('historyBadge');
+        badge.innerHTML = "⏳ กำลังตรวจสอบประวัติการส่งประจำเดือน...";
+
+        fetch(`${API_URL}?action=getUploadedEquipments&month=${month}`)
         .then(res => res.json())
-        .then(list => {
-          allEquipments = list;
-          fetchUploadedEquipments(month);
-        })
-        .catch(err => {
-          console.error('Error fetching list:', err);
-          // Fallback ในกรณีทดสอบระบบ
-          allEquipments = ["UBP-AODB-SERVER-01", "UBP-AODB-SERVER-02", "UBP-AODB-Monitor-1"];
-          fetchUploadedEquipments(month);
+        .then(data => {
+            uploadedList = data;
+            showEquipmentStatus();
         });
     }
 
-    // ===== เปลี่ยนแปลงรอบประจำเดือน =====
-    function handleMonthChange(event) {
-      const selectedMonth = event.target.value;
-      fetchUploadedEquipments(selectedMonth);
-      document.getElementById('selectedItemDisplay').className = 'hidden';
-    }
-
-    // ===== ดึงข้อมูลประวัติที่เคยอัปโหลดในเดือนนั้นๆ =====
-    function fetchUploadedEquipments(month) {
-      document.getElementById('loadingEqStatus').classList.remove('hidden');
-      
-      fetch(`${WEB_APP_URL}?action=getUploadedEquipments&month=${month}`)
-        .then(res => res.json())
-        .then(uploadedList => {
-          uploadedEquipments = uploadedList;
-          document.getElementById('loadingEqStatus').classList.add('hidden');
-
-          var badge = document.getElementById('connectionBadge');
-          badge.classList.add('connected');
-          document.getElementById('connectionText').innerText = 'ข้อมูลเป็นปัจจุบัน';
-
-          filterEquipment();
-        })
-        .catch(err => {
-          console.error('Error fetching history:', err);
-          document.getElementById('loadingEqStatus').classList.add('hidden');
-          filterEquipment();
-        });
-    }
-
-    // ===== เรนเดอร์ตัวเลือกอุปกรณ์ =====
-    function renderEquipmentOptions(list) {
-      if (!list) list = allEquipments;
-      var select = document.getElementById('equipmentSelect');
-      select.innerHTML = '';
-
-      list.forEach(function(item) {
-        var isUploaded = uploadedEquipments.includes(item);
-        var opt = document.createElement('option');
-        opt.value = item;
-
-        if (isUploaded) {
-          opt.textContent = item + ' ✅';
-          opt.style.color = 'var(--success)';
-          opt.style.fontWeight = '600';
-        } else {
-          opt.textContent = item;
+    // แสดงสถานะอุปกรณ์ที่เลือก
+    function showEquipmentStatus() {
+        const selectedEq = document.getElementById('equipmentSelect').value;
+        const badge = document.getElementById('historyBadge');
+        
+        if(!selectedEq) {
+            badge.innerHTML = "";
+            return;
         }
-        select.appendChild(opt);
-      });
+
+        if(uploadedList.includes(selectedEq)) {
+            badge.innerHTML = `<span class="badge bg-success status-badge">✓ อุปกรณ์นี้จัดเก็บข้อมูลในรอบเดือนนี้เรียบร้อยแล้ว</span>`;
+        } else {
+            badge.innerHTML = `<span class="badge bg-warning text-dark status-badge">⚠ ยังไม่มีข้อมูลของรอบเดือนนี้ (สามารถส่งใหม่ได้)</span>`;
+        }
     }
 
-    // ===== ระบบค้นหาอุปกรณ์ =====
-    function filterEquipment() {
-      var q = document.getElementById('searchEquipment').value.toLowerCase();
-      var filtered = allEquipments.filter(function(item) {
-        return item.toLowerCase().indexOf(q) !== -1;
-      });
-      renderEquipmentOptions(filtered);
-    }
+    // แปลงไฟล์ภาพเป็น Base64
+    function handleFile(input, index) {
+        const file = input.files[0];
+        if (!file) return;
 
-    // ===== ระบบบีบอัดภาพถ่าย =====
-    function compressImage(file, maxWidth, maxHeight, quality) {
-      return new Promise(function(resolve, reject) {
-        var reader = new FileReader();
+        const reader = new FileReader();
         reader.onload = function(e) {
-          var img = new Image();
-          img.onload = function() {
-            var width = img.width;
-            var height = img.height;
-
-            if (width > maxWidth || height > maxHeight) {
-              var ratio = Math.min(maxWidth / width, maxHeight / height);
-              width = Math.round(width * ratio);
-              height = Math.round(height * ratio);
-            }
-
-            var canvas = document.createElement('canvas');
-            canvas.width = width;
-            canvas.height = height;
-            var ctx = canvas.getContext('2d');
-
-            ctx.fillStyle = '#FFFFFF';
-            ctx.fillRect(0, 0, width, height);
-            ctx.drawImage(img, 0, 0, width, height);
-
-            var compressedBase64 = canvas.toDataURL('image/jpeg', quality);
-            var originalSize = file.size;
-            var compressedSize = Math.round((compressedBase64.length - 'data:image/jpeg;base64,'.length) * 3 / 4);
-
-            resolve({
-              base64: compressedBase64,
-              type: 'image/jpeg',
-              originalSize: originalSize,
-              compressedSize: compressedSize,
-              width: width,
-              height: height
-            });
-          };
-          img.onerror = function() { reject(new Error('ไม่สามารถอ่านไฟล์ภาพได้')); };
-          img.src = e.target.result;
+            base64Photos[index] = {
+                filename: file.name,
+                base64: e.target.result
+            };
+            const prev = document.getElementById(`prev${index}`);
+            prev.src = e.target.result;
+            prev.style.display = 'block';
         };
-        reader.onerror = function() { reject(new Error('ไม่สามารถอ่านไฟล์ได้')); };
         reader.readAsDataURL(file);
-      });
     }
 
-    function formatSize(bytes) {
-      if (bytes < 1024) return bytes + ' B';
-      if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
-      return (bytes / 1048576).toFixed(1) + ' MB';
-    }
+    // ฟังก์ชันรวบรวมข้อมูลและยิงส่งบันทึกหลังบ้าน
+    function submitData() {
+        const month = document.getElementById('monthInput').value;
+        const equipment = document.getElementById('equipmentSelect').value;
+        const submitBtn = document.getElementById('submitBtn');
 
-    function handleFileChange(event, index) {
-      var file = event.target.files[0];
-      if (!file) return;
+        if(!month || !equipment) {
+            alert('กรุณาเลือกข้อมูลเดือนและระบุรหัสอุปกรณ์ให้ครบถ้วนก่อนครับ');
+            return;
+        }
 
-      var container = document.getElementById('previewContainer' + index);
-      var box = document.getElementById('photoBox' + index);
+        submitBtn.disabled = true;
+        submitBtn.innerText = '⏳ กำลังนำส่งพัสดุข้อมูลและอัปโหลดไฟล์ภาพ...';
 
-      container.innerHTML = '<div class="photo-placeholder"><div class="icon-circle"><i class="fa-solid fa-spinner fa-spin"></i></div><p class="label">กำลังบีบอัด...</p></div>';
+        const payload = {
+            month: month,
+            equipment: equipment,
+            photos: base64Photos
+        };
 
-      compressImage(file, COMPRESS_MAX_WIDTH, COMPRESS_MAX_HEIGHT, COMPRESS_QUALITY)
-        .then(function(result) {
-          base64Photos[index] = { base64: result.base64, type: result.type };
-          box.classList.add('has-photo');
-
-          var savedPercent = Math.round((1 - result.compressedSize / result.originalSize) * 100);
-          if (savedPercent < 0) savedPercent = 0;
-
-          container.innerHTML = 
-            '<img src="' + result.base64 + '" class="photo-preview" alt="preview">' +
-            '<div class="photo-info-overlay">' +
-              '<span class="size-info">' +
-                '<i class="fa-solid fa-compress"></i> ' +
-                formatSize(result.originalSize) + ' → ' + formatSize(result.compressedSize) +
-              '</span>' +
-              '<span class="saved-badge">' +
-                '↓ ประหยัด ' + savedPercent + '% (' + result.width + '×' + result.height + 'px)' +
-              '</span>' +
-            '</div>';
-
-          updatePhotoCount();
+        fetch(API_URL, {
+            method: 'POST',
+            body: JSON.stringify(payload)
         })
-        .catch(function(err) {
-          container.innerHTML = '<div class="photo-placeholder"><div class="icon-circle" style="background:rgba(239,68,68,0.1);border-color:rgba(239,68,68,0.2);"><i class="fa-solid fa-triangle-exclamation" style="color:var(--danger);"></i></div><p class="label" style="color:var(--danger);">เกิดข้อผิดพลาด</p><p class="hint">' + err.message + '</p></div>';
+        .then(res => res.json())
+        .then(res => {
+            if(res.success) {
+                alert(res.message);
+                // ล้างค่าฟอร์มรูปภาพหลังส่งเสร็จ
+                base64Photos = [null, null, null, null];
+                for(let i=0; i<4; i++) {
+                    document.getElementById(`prev${i}`).style.display = 'none';
+                }
+                checkUploadHistory();
+            } else {
+                alert('เกิดข้อผิดพลาด: ' + res.message);
+            }
+        })
+        .catch(err => {
+            alert('ไม่สามารถส่งข้อมูลข้ามเครือข่ายได้ กรุณาตรวจสอบการตั้งค่า Deploy');
+            console.error(err);
+        })
+        .finally(() => {
+            submitBtn.disabled = false;
+            submitBtn.innerText = '💾 บันทึกข้อมูลและส่งแจ้งเตือน';
         });
     }
+</script>
 
-    function updatePhotoCount() {
-      photoCount = base64Photos.filter(function(p) { return p !== null; }).length;
-      var badge = document.getElementById('photoCountBadge');
-      badge.textContent = photoCount + ' / 4 รูป';
-
-      if (photoCount === 4) {
-        badge.style.background = 'var(--success-bg)';
-        badge.style.color = 'var(--success)';
-        badge.style.borderColor = 'rgba(16, 185, 129, 0.3)';
-      } else {
-        badge.style.background = 'rgba(73, 106, 237, 0.1)';
-        badge.style.color = 'var(--accent-secondary)';
-        badge.style.borderColor = 'rgba(73, 106, 237, 0.2)';
-      }
-    }
-
-    // ===== ส่งข้อมูลรายงานไปยัง Google Apps Script (ยิงแบบ POST) =====
-    function handleSubmit(event) {
-      event.preventDefault();
-
-      var equipment = document.getElementById('equipmentSelect').value;
-      if (!equipment) {
-        alert('กรุณาเลือกอุปกรณ์จากรายการก่อน');
-        return;
-      }
-      if (base64Photos.indexOf(null) !== -1) {
-        alert('กรุณาถ่ายรูปหรือเลือกรูปให้ครบทั้ง 4 รูป');
-        return;
-      }
-      if (uploadedEquipments.indexOf(equipment) !== -1) {
-        if (!confirm('⚠️ อุปกรณ์ ' + equipment + ' เคยถูกอัปโหลดในรอบเดือนนี้ไปแล้ว\nยืนยันที่จะอัปโหลดซ้ำหรือไม่?')) return;
-      }
-
-      var overlay = document.getElementById('statusOverlay');
-      overlay.classList.add('active');
-      document.getElementById('loadingContent').classList.remove('hidden');
-      document.getElementById('resultContent').classList.add('hidden');
-
-      var payload = {
-        action: 'uploadData',
-        month: document.getElementById('monthInput').value,
-        equipment: equipment,
-        photos: base64Photos
-      };
-
-      // ยิงข้อมูลข้ามระบบไปยัง Google Apps Script Web App
-      fetch(WEB_APP_URL, {
-        method: 'POST',
-        mode: 'no-cors', // ตั้งค่าป้องกันปัญหา CORS พื้นฐานสำหรับ Apps Script
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(payload)
-      })
-      .then(function() {
-        // เนื่องจากใช้โหมด no-cors จะไม่สามารถอ่าน JSON Response ได้โดยตรง แต่หมายถึงฝั่ง Google Apps Script ได้รับข้อมูลไปทำต่อเรียบร้อยแล้ว
-        if (uploadedEquipments.indexOf(equipment) === -1) uploadedEquipments.push(equipment);
-
-        document.getElementById('loadingContent').classList.add('hidden');
-        document.getElementById('resultContent').classList.remove('hidden');
-        document.getElementById('resultIcon').className = 'result-icon success';
-        document.getElementById('resultIcon').innerHTML = '<i class="fa-solid fa-circle-check"></i>';
-        document.getElementById('resultTitle').innerText = 'ส่งข้อมูลสำเร็จ!';
-        document.getElementById('resultDesc').innerText = 'ระบบส่งข้อมูลรายงานและรูปภาพของอุปกรณ์ ' + equipment + ' เข้าสู่คลาวด์เรียบร้อยแล้ว';
-
-        document.getElementById('uploadForm').reset();
-        document.getElementById('selectedItemDisplay').className = 'hidden';
-        document.getElementById('monthInput').value = payload.month;
-        filterEquipment();
-        resetPreviews();
-      })
-      .catch(function(err) {
-        console.error('Error uploading:', err);
-        document.getElementById('loadingContent').classList.add('hidden');
-        document.getElementById('resultContent').classList.remove('hidden');
-        document.getElementById('resultIcon').className = 'result-icon error';
-        document.getElementById('resultIcon').innerHTML = '<i class="fa-solid fa-circle-xmark"></i>';
-        document.getElementById('resultTitle').innerText = 'เกิดข้อผิดพลาด';
-        document.getElementById('resultDesc').innerText = 'ไม่สามารถเชื่อมต่อระบบหลังบ้านได้ กรุณาตรวจสอบอินเทอร์เน็ต';
-      });
-    }
-
-    function resetPreviews() {
-      base64Photos = [null, null, null, null];
-      photoCount = 0;
-      updatePhotoCount();
-
-      var titles = ['รูปอุปกรณ์', 'รูปตำแหน่งติดตั้ง', 'รูปสถานะการทำงาน', 'รูปทำความสะอาด'];
-      var icons = ['fa-box', 'fa-map-location-dot', 'fa-heart-pulse', 'fa-broom'];
-
-      for (var i = 0; i < 4; i++) {
-        document.getElementById('photoBox' + i).classList.remove('has-photo');
-        document.getElementById('previewContainer' + i).innerHTML =
-          '<div class="icon-circle"><i class="fa-solid ' + icons[i] + '"></i></div>' +
-          '<p class="label">' + titles[i] + '</p>' +
-          '<p class="hint">แตะเพื่อถ่ายภาพ</p>';
-      }
-    }
-
-    function closeOverlay() {
-      document.getElementById('statusOverlay').classList.remove('active');
-    }
-  </script>
 </body>
 </html>

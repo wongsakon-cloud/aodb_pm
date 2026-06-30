@@ -75,29 +75,12 @@
   body{
     font-family:var(--font-body);
     background-color:var(--bg);
-    background-image:var(--bg-grid);
-    background-size:34px 34px;
     color:var(--ink);
     min-height:100vh;
     line-height:1.5;
     -webkit-font-smoothing:antialiased;
     overflow-x:hidden;
     transition:background-color .35s var(--ease), color .35s var(--ease);
-  }
-  [data-theme="dark"] body{
-    background-image:
-      radial-gradient(at 10% 0%, rgba(45,212,207,.10) 0, transparent 50%),
-      radial-gradient(at 90% 10%, rgba(167,139,250,.08) 0, transparent 50%),
-      radial-gradient(at 100% 100%, rgba(251,191,36,.06) 0, transparent 50%),
-      var(--bg-grid);
-    background-attachment:fixed;
-  }
-  [data-theme="light"] body{
-    background-image:
-      radial-gradient(at 10% 0%, rgba(13,157,152,.07) 0, transparent 50%),
-      radial-gradient(at 90% 10%, rgba(124,58,237,.05) 0, transparent 50%),
-      var(--bg-grid);
-    background-attachment:fixed;
   }
 
   .app-container{max-width:880px;margin:0 auto;padding:16px 16px 48px;}
@@ -120,11 +103,7 @@
   }
   [data-theme="light"] .glass::before{background:linear-gradient(160deg, rgba(255,255,255,.55), rgba(255,255,255,0) 45%);}
 
-  /* Ambient glow orbs behind the whole app — gives the frosted "Neo-Tactile" depth */
-  .bg-orb{position:fixed;border-radius:50%;filter:blur(70px);z-index:-1;pointer-events:none;}
-  .bg-orb.o1{width:340px;height:340px;top:-120px;left:-100px;background:radial-gradient(circle,var(--teal),transparent 70%);opacity:.35;}
-  .bg-orb.o2{width:300px;height:300px;bottom:-100px;right:-90px;background:radial-gradient(circle,var(--violet),transparent 70%);opacity:.3;}
-  .bg-orb.o3{width:240px;height:240px;top:40%;right:10%;background:radial-gradient(circle,var(--amber),transparent 70%);opacity:.18;}
+  /* (ฉากหลังเรียบ — ไม่มีลูกแสงลอย) */
 
   /* ===== Header ===== */
   .app-header{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:18px 4px 22px;flex-wrap:wrap;}
@@ -290,6 +269,22 @@
   .selected-badge span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;}
   .selected-badge.uploaded{background:var(--ok-soft);color:var(--ok);border-color:var(--ok-soft);}
 
+  .prev-photo-note{font-size:.78rem;color:var(--ink-faint);line-height:1.5;margin-bottom:13px;}
+  .prev-photo-note b{color:var(--amber);font-weight:600;}
+  .prev-photo-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media (min-width:600px){.prev-photo-grid{grid-template-columns:repeat(4,1fr);}}
+  .prev-photo-box{
+    aspect-ratio:1;border-radius:var(--radius-md);overflow:hidden;position:relative;
+    background:var(--input);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;
+  }
+  .prev-photo-box img{width:100%;height:100%;object-fit:cover;}
+  .prev-photo-box .pp-label{
+    position:absolute;left:5px;bottom:5px;font-family:var(--font-mono);font-size:.6rem;
+    background:rgba(0,0,0,.55);color:#fff;padding:2px 6px;border-radius:6px;letter-spacing:.3px;
+  }
+  .prev-photo-box .pp-empty{color:var(--ink-faint);font-size:.75rem;text-align:center;padding:6px;}
+  .prev-photo-box .pp-spinner{color:var(--teal);font-size:1.3rem;}
+
   .photo-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
   @media (min-width:600px){.photo-grid{grid-template-columns:repeat(4,1fr);}}
   .photo-box{
@@ -355,13 +350,6 @@
     position:fixed;inset:0;z-index:2000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
     background:var(--bg);transition:opacity .5s var(--ease), visibility .5s;
   }
-  .app-splash::before{
-    content:'';position:absolute;inset:0;
-    background:
-      radial-gradient(at 20% 20%, var(--teal-soft) 0, transparent 55%),
-      radial-gradient(at 80% 80%, var(--violet-soft) 0, transparent 55%);
-    filter:blur(10px);
-  }
   .app-splash.hide{opacity:0;visibility:hidden;pointer-events:none;}
   .splash-logo{position:relative;width:74px;height:74px;display:flex;align-items:center;justify-content:center;z-index:1;}
   .splash-logo::before{
@@ -381,10 +369,6 @@
 </style>
 </head>
 <body>
-
-<div class="bg-orb o1"></div>
-<div class="bg-orb o2"></div>
-<div class="bg-orb o3"></div>
 
 <!-- App Splash / Loading screen — เด่นชัดบนมือถือตอนเปิดแอปครั้งแรก -->
 <div class="app-splash" id="appSplash">
@@ -495,6 +479,16 @@
         </div>
 
         <div id="selectedItemDisplay" class="hidden selected-badge"></div>
+      </div>
+
+      <!-- ตรวจสอบภาพที่อัปโหลดไว้ก่อนหน้า -->
+      <div class="glass form-group hidden" id="prevPhotosCard">
+        <h3 class="section-title">
+          <span><i class="fa-solid fa-clock-rotate-left" style="color:var(--amber);"></i> ภาพที่อัปโหลดไว้ก่อนหน้า</span>
+          <span style="font-size:.72rem;font-weight:500;color:var(--ink-faint);">สำหรับตรวจสอบ</span>
+        </h3>
+        <div class="prev-photo-note">ภาพชุดนี้คือภาพล่าสุดที่บันทึกไว้ในระบบ — ตรวจดูว่าถูกต้องครบถ้วนหรือไม่ หากอัปโหลดภาพใหม่ด้านล่าง ระบบจะ<b>บันทึกทับภาพชุดนี้ทันที</b></div>
+        <div class="prev-photo-grid" id="prevPhotoGrid"></div>
       </div>
 
       <div class="glass form-group">
@@ -698,12 +692,50 @@
       if (isUploaded) {
         display.innerHTML = `<i class="fa-solid fa-check-circle"></i> <span>${selectedVal} (อัปโหลดแล้ว)</span>`;
         display.className = 'selected-badge uploaded';
+        showPreviousPhotos(selectedVal, document.getElementById('monthInput').value);
       } else {
         display.innerHTML = `<i class="fa-solid fa-server"></i> <span>${selectedVal}</span>`;
         display.className = 'selected-badge';
+        hidePreviousPhotos();
       }
     });
   };
+
+  // =========================================================
+  // ตรวจสอบภาพที่อัปโหลดไว้ก่อนหน้า — เรียกดูภาพชุดเดิมของอุปกรณ์/เดือนที่เลือก
+  // =========================================================
+  const PHOTO_LABELS = ['1. รูปอุปกรณ์', '2. ตำแหน่งติดตั้ง', '3. สถานะการทำงาน', '4. ทำความสะอาด'];
+
+  function hidePreviousPhotos(){
+    document.getElementById('prevPhotosCard').classList.add('hidden');
+  }
+
+  function showPreviousPhotos(equipment, month){
+    const card = document.getElementById('prevPhotosCard');
+    const grid = document.getElementById('prevPhotoGrid');
+    card.classList.remove('hidden');
+    grid.innerHTML = PHOTO_LABELS.map(() =>
+      `<div class="prev-photo-box"><i class="fa-solid fa-circle-notch fa-spin pp-spinner"></i></div>`
+    ).join('');
+
+    fetch(GAS_WEB_APP_URL + '?action=getEquipmentPhotos&month=' + encodeURIComponent(month) + '&equipment=' + encodeURIComponent(equipment))
+      .then(res => res.json())
+      .then(data => {
+        // รองรับทั้งรูปแบบ {photos:[...]} และ [...] ตรงๆ
+        const photos = Array.isArray(data) ? data : (data && data.photos) ? data.photos : [];
+        grid.innerHTML = PHOTO_LABELS.map((label, i) => {
+          const url = photos[i];
+          if (url) {
+            return `<div class="prev-photo-box"><img src="${url}" alt="${label}"><span class="pp-label">${label}</span></div>`;
+          }
+          return `<div class="prev-photo-box"><span class="pp-empty">ไม่มีภาพ<br>${label}</span></div>`;
+        }).join('');
+      })
+      .catch(err => {
+        console.error(err);
+        grid.innerHTML = `<div class="prev-photo-box" style="grid-column:1/-1;aspect-ratio:auto;padding:18px;"><span class="pp-empty">ไม่สามารถโหลดภาพเดิมได้ในขณะนี้</span></div>`;
+      });
+  }
 
   function switchTab(tab) {
     currentTab = tab;
@@ -733,6 +765,7 @@
     document.getElementById('statusMonthDisplay').innerText = selectedMonth;
     document.getElementById('dashMonthDisplay').innerText = selectedMonth;
     document.getElementById('selectedItemDisplay').classList.add('hidden');
+    hidePreviousPhotos();
     fetchUploadedEquipments(selectedMonth);
   }
 
@@ -971,8 +1004,9 @@
     if (!equipment) return alert('กรุณาเลือกอุปกรณ์จากรายการก่อน');
     if (base64Photos.includes(null)) return alert('กรุณาถ่ายรูปหรือเลือกรูปให้ครบทั้ง 4 รูป');
 
-    if (uploadedEquipments.includes(equipment)) {
-      if (!confirm(`⚠️ ${equipment} เคยถูกอัปโหลดในรอบนี้แล้ว ยืนยันอัปโหลดซ้ำ?`)) return;
+    var isOverwrite = uploadedEquipments.includes(equipment);
+    if (isOverwrite) {
+      if (!confirm(`⚠️ ${equipment} เคยถูกอัปโหลดในรอบนี้แล้ว\nภาพชุดใหม่จะบันทึกทับภาพเดิมทั้งหมด ยืนยันหรือไม่?`)) return;
     }
 
     var overlay = document.getElementById('statusOverlay');
@@ -983,7 +1017,8 @@
     var payload = {
       month: document.getElementById('monthInput').value,
       equipment: equipment,
-      photos: base64Photos
+      photos: base64Photos,
+      overwrite: isOverwrite
     };
 
     fetch(GAS_WEB_APP_URL, {
@@ -1005,6 +1040,7 @@
 
         document.getElementById('uploadForm').reset();
         document.getElementById('selectedItemDisplay').classList.add('hidden');
+        hidePreviousPhotos();
         filterEquipment();
         renderStatusLists();
         renderDashboard();
